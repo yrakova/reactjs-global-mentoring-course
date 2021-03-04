@@ -1,0 +1,25 @@
+@import "~/assets/styles/variables.scss";
+
+.searchDiv {
+  display: flex;
+  justify-content: center;
+  vertical-align: middle;
+}
+
+.title {
+  color: $color-white;
+  font-family: $regular-font;
+  font-weight: 200;
+}
+
+.searchButton {
+  color: $color-white;
+  font-size: 1.5em;
+  background-color: $color-pink;
+  border: none;
+}
+
+input {
+  width: 20em;
+  font-size: 1.5em;
+}

@@ -1,0 +1,16 @@
+@import "~/assets/styles/variables.scss";
+
+.SortElement {
+  display: flex;
+  justify-content: center;
+
+  p {
+    color: $color-light-grey;
+    padding: 0 0.1em;
+  }
+}
+
+.dropdown {
+  font-size: 1em;
+  width: 10em;
+}

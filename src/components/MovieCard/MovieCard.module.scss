@@ -1,0 +1,33 @@
+@import "~/assets/styles/variables.scss";
+
+.MovieCard {
+  height: 500px;
+  width: 300px;
+
+  border: 2px solid $color-light-grey;
+  border-radius: 10px;
+  margin: 20px;
+  padding: 20px;
+
+  img {
+    width: 300px;
+    height: 450px;
+  }
+}
+
+.descriptionContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 1.2em;
+}
+
+.year {
+  border-radius: 5px;
+  border: 1px solid grey;
+  font-size: 1em;
+  line-height: 1.2em;
+  padding: 4px;
+}
