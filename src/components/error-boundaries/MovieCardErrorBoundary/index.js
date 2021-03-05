@@ -1,1 +1,1 @@
-export { default } from "./MovieCardErrorBoundary";
+export { default } from './MovieCardErrorBoundary';

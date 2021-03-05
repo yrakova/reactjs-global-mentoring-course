@@ -1,7 +1,7 @@
-import React from "react";
-import styles from "./Header.module.scss";
-import SearchElement from "~/components/SearchElement";
-import Logo from "./../Logo";
+import React from 'react';
+import styles from './Header.module.scss';
+import SearchElement from '~/components/SearchElement';
+import Logo from '../Logo';
 
 const Header = () => (
   <>

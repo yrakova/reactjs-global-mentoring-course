@@ -1,9 +1,7 @@
-import React from "react";
-import Logo from "./../Logo/";
+import React from 'react';
+import Logo from '../Logo';
 
-const Footer = () => {
-  return <Logo />;
-};
+const Footer = () => <Logo />;
 
 Footer.propTypes = {};
 

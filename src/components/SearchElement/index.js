@@ -1,1 +1,1 @@
-export { default } from "./SearchElement";
+export { default } from './SearchElement';

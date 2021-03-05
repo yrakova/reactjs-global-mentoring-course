@@ -1,6 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./Logo.module.scss";
+import React from 'react';
+import styles from './Logo.module.scss';
 
 const Logo = () => <p className={styles.Logo}>netflix roulette</p>;
 

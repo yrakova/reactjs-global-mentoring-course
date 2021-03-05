@@ -1,22 +1,22 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const src = path.resolve(__dirname, "src");
-const dist = path.resolve(__dirname, "dist");
+const src = path.resolve(__dirname, 'src');
+const dist = path.resolve(__dirname, 'dist');
 
 module.exports = {
-  entry: ["./src/index.js"],
+  entry: ['./src/index.js'],
   output: {
-    filename: "main.js",
+    filename: 'main.js',
     path: dist,
   },
   resolve: {
     alias: {
-      "~": src,
+      '~': src,
     },
-    extensions: [".js", ".jsx", ".scss"],
+    extensions: ['.js', '.jsx', '.scss'],
   },
   module: {
     rules: [
@@ -24,23 +24,23 @@ module.exports = {
         test: /\.scss$/i,
         use: [
           // Creates `style` nodes from JS strings
-          "style-loader",
+          'style-loader',
           // Translates CSS into CommonJS
-          { loader: "css-loader", options: { modules: true } },
+          { loader: 'css-loader', options: { modules: true } },
           // Compiles Sass to CSS
-          "sass-loader",
+          'sass-loader',
         ],
       },
       {
         test: /\.(jsx|js)$/,
-        include: path.resolve(__dirname, "src"),
+        include: path.resolve(__dirname, 'src'),
         exclude: /(node_modules)/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
             presets: [
-              ["@babel/preset-env", { targets: "defaults" }],
-              "@babel/preset-react",
+              ['@babel/preset-env', { targets: 'defaults' }],
+              '@babel/preset-react',
             ],
           },
         },
@@ -48,10 +48,10 @@ module.exports = {
       {
         test: /\.(woff(2)?|ttf|eot|svg)?$/,
         use: {
-          loader: "file-loader",
+          loader: 'file-loader',
           options: {
-            name: "[name].[ext]",
-            outputPath: "fonts/",
+            name: '[name].[ext]',
+            outputPath: 'fonts/',
           },
         },
       },
@@ -60,12 +60,12 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      title: "ReactJS App",
-      template: "./src/assets/index-template.html",
-      filename: "index.html",
+      title: 'ReactJS App',
+      template: './src/assets/index-template.html',
+      filename: 'index.html',
     }),
     new CopyWebpackPlugin({
-      patterns: [{ from: "public/**/*", to: "[path][name].[ext]" }],
+      patterns: [{ from: 'public/**/*', to: '[path][name].[ext]' }],
     }),
   ],
 };

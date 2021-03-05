@@ -1,13 +1,13 @@
-import React from "react";
+import React from 'react';
 
-import styles from "./SortElement.module.scss";
+import styles from './SortElement.module.scss';
 
 const SORT_BY_VALUES = [
-  { id: 1, label: "Release Date", value: "year" },
-  { id: 2, label: "Title", value: "title" },
+  { id: 1, label: 'Release Date', value: 'year' },
+  { id: 2, label: 'Title', value: 'title' },
 ];
 
-const SortElement = (props) => (
+const SortElement = () => (
   <div className={styles.SortElement}>
     <p>Sort By</p>
     <p>

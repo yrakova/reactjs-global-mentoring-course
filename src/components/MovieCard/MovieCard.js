@@ -1,18 +1,18 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./MovieCard.module.scss";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './MovieCard.module.scss';
 
-const MovieCard = (props) => {
-  if (props.isBuggy) {
-    throw new Error("random error");
+const MovieCard = ({ isBuggy, title, year, posterUri }) => {
+  if (isBuggy) {
+    throw new Error('random error');
   }
 
   return (
     <div className={styles.MovieCard}>
-      <img src={props.posterUri} />
+      <img src={posterUri} />
       <div className={styles.descriptionContainer}>
-        <p className={styles.title}>{props.title}</p>
-        <p className={styles.year}>{props.year}</p>
+        <p className={styles.title}>{title}</p>
+        <p className={styles.year}>{year}</p>
       </div>
     </div>
   );
@@ -25,6 +25,8 @@ MovieCard.propTypes = {
   isBuggy: PropTypes.bool,
 };
 
-MovieCard.defaultProps = {};
+MovieCard.defaultProps = {
+  isBuggy: false,
+};
 
 export default MovieCard;

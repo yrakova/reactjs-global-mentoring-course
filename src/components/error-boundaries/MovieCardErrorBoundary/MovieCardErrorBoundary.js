@@ -1,19 +1,16 @@
-import React from "react";
+import React from 'react';
 
-import styles from "./MovieCardErrorBoundary.module.scss";
-import movieCardStyles from "~/components/MovieCard/MovieCard.module.scss";
+import styles from './MovieCardErrorBoundary.module.scss';
+import movieCardStyles from '~/components/MovieCard/MovieCard.module.scss';
 
 class MovieCardErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { error: null, errorInfo: null };
+    this.state = { error: null };
   }
 
-  componentDidCatch(error, errorInfo) {
-    this.setState({
-      error,
-      errorInfo,
-    });
+  componentDidCatch(error) {
+    this.setState({ error });
   }
 
   render() {
@@ -28,7 +25,8 @@ class MovieCardErrorBoundary extends React.Component {
         </div>
       );
     }
-    return this.props.children;
+    const { children } = this.props;
+    return children;
   }
 }
 

@@ -1,7 +1,7 @@
-import React from "react";
-import styles from "./NavBar.module.scss";
-import FilterBar from "../containers/FilterBar/FilterBar";
-import SortElement from "../SortElement/SortElement";
+import React from 'react';
+import styles from './NavBar.module.scss';
+import FilterBar from '../containers/FilterBar/FilterBar';
+import SortElement from '../SortElement/SortElement';
 
 const NavBar = () => (
   <div className={styles.NavBar}>

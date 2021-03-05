@@ -1,7 +1,7 @@
-import MovieCardErrorBoundary from "~/components/error-boundaries/MovieCardErrorBoundary";
-import MovieCard from "~/components/MovieCard";
-import { mockData } from "~/services/mock-data";
-import React from "react";
+import React from 'react';
+import MovieCardErrorBoundary from '~/components/error-boundaries/MovieCardErrorBoundary';
+import MovieCard from '~/components/MovieCard';
+import { mockData } from '~/services/mock-data';
 
 const MovieList = () => (
   <>

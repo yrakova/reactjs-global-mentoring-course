@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./FilterItem.module.scss";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './FilterItem.module.scss';
 
-const FilterItem = (props) => (
-  <button className={styles.filterButton}>{props.title}</button>
+const FilterItem = ({ title }) => (
+  <button className={styles.filterButton}>{title}</button>
 );
 
 FilterItem.propTypes = {
