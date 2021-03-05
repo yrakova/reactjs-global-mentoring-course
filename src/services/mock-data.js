@@ -1,4 +1,4 @@
-const mockData = {
+const mockMoviesData = {
   movies: [
     {
       id: 1,
@@ -45,4 +45,17 @@ const mockData = {
   ],
 };
 
-export { mockData };
+const GENRES = [
+  { id: 1, label: 'All' },
+  { id: 2, label: 'Documentary' },
+  { id: 3, label: 'Comedy' },
+  { id: 4, label: 'Horror' },
+  { id: 5, label: 'Crime' },
+];
+
+const SORT_BY_VALUES = [
+  { id: 1, label: 'Release Date', value: 'year' },
+  { id: 2, label: 'Title', value: 'title' },
+];
+
+export { mockMoviesData, GENRES, SORT_BY_VALUES };

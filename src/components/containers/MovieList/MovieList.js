@@ -1,11 +1,11 @@
 import React from 'react';
 import MovieCardErrorBoundary from '~/components/error-boundaries/MovieCardErrorBoundary';
 import MovieCard from '~/components/MovieCard';
-import { mockData } from '~/services/mock-data';
+import { mockMoviesData } from '~/services/mock-data';
 
 const MovieList = () => (
   <>
-    {mockData.movies.map((movie) => (
+    {mockMoviesData.movies.map((movie) => (
       <MovieCardErrorBoundary key={movie.id}>
         <MovieCard
           title={movie.title}

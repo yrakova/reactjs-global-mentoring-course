@@ -1,11 +1,7 @@
 import React from 'react';
 
 import styles from './SortElement.module.scss';
-
-const SORT_BY_VALUES = [
-  { id: 1, label: 'Release Date', value: 'year' },
-  { id: 2, label: 'Title', value: 'title' },
-];
+import { SORT_BY_VALUES } from '~/services/mock-data';
 
 const SortElement = () => (
   <div className={styles.SortElement}>
