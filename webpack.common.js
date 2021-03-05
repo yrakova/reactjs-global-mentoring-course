@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const src = path.resolve(__dirname, 'src');
 const dist = path.resolve(__dirname, 'dist');
@@ -9,7 +10,7 @@ const dist = path.resolve(__dirname, 'dist');
 module.exports = {
   entry: ['./src/index.js'],
   output: {
-    filename: 'main.js',
+    filename: '[name].[hash].bundle.js',
     path: dist,
   },
   resolve: {
@@ -21,14 +22,25 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.scss$/i,
+        test: /\.(sa|sc|c)ss$/,
         use: [
-          // Creates `style` nodes from JS strings
-          'style-loader',
-          // Translates CSS into CommonJS
-          { loader: 'css-loader', options: { modules: true } },
-          // Compiles Sass to CSS
-          'sass-loader',
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                localIdentName: '[local]-[hash:base64:5]',
+              },
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sassOptions: {
+                minimize: false,
+              },
+            },
+          },
         ],
       },
       {
@@ -59,6 +71,9 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: '[name].[hash].css',
+    }),
     new HtmlWebpackPlugin({
       title: 'ReactJS App',
       template: './src/assets/index-template.html',
