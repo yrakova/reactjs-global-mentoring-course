@@ -16,6 +16,12 @@
     font-size: 1.2em;
     background-color: $color-grey;
     color: $color-white;
+
+    &:read-only {
+      border: none;
+      outline: none;
+      background-color: rgba($color-grey, 0);
+    }
   }
 
   textarea {

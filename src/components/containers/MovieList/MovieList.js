@@ -3,14 +3,22 @@ import MovieCardErrorBoundary from '~/components/error-boundaries/MovieCardError
 import MovieCard from '~/components/MovieCard';
 import { mockMoviesData } from '~/services/mock-data';
 import DeleteMovieModal from '../../modals/DeleteMovieModal';
+import AddMovieModal from '../../modals/AddMovieModal';
+
+const getMovieById = (id) => mockMoviesData.movies.find((movie) => movie.id === id);
 
 class MovieList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { showEditForm: false, showDeleteForm: false, selectedMovieId: null };
+    this.state = {
+      showEditForm: false,
+      showDeleteForm: false,
+      selectedMovieId: null,
+    };
 
     this.optionsHandler = this.optionsHandler.bind(this);
     this.onDeleteFormAction = this.onDeleteFormAction.bind(this);
+    this.onEditFormAction = this.onEditFormAction.bind(this);
   }
 
   optionsHandler(action, movieId) {
@@ -43,22 +51,29 @@ class MovieList extends React.Component {
     }
   }
 
+  onEditFormAction(action, movieId) {
+    this.setState({ showEditForm: false, selectedMovieId: null });
+  }
+
   render() {
     const { showEditForm, showDeleteForm, selectedMovieId } = this.state;
     return (
       <>
         {mockMoviesData.movies.map((movie) => (
           <MovieCardErrorBoundary key={movie.id}>
-            <MovieCard
-              movie={movie}
-              optionsHandler={this.optionsHandler}
-            />
+            <MovieCard movie={movie} optionsHandler={this.optionsHandler} />
           </MovieCardErrorBoundary>
         ))}
         <DeleteMovieModal
           show={showDeleteForm}
           onAction={this.onDeleteFormAction}
           movieId={selectedMovieId}
+        />
+        <AddMovieModal
+          isEdit
+          show={showEditForm}
+          onAction={this.onEditFormAction}
+          movie={getMovieById(selectedMovieId)}
         />
       </>
     );

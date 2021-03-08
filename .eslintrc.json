@@ -21,6 +21,7 @@
     "react/button-has-type": "off",
     "jsx-a11y/alt-text": "off",
     "react/prefer-stateless-function": "off",
-    "react/sort-comp": "off"
+    "react/sort-comp": "off",
+    "linebreak-style": "off"
   }
 }
