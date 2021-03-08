@@ -1,0 +1,33 @@
+@import "~/assets/styles/variables.scss";
+
+.ModalBase {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-white;
+  font-family: $regular-font;
+
+  .container {
+      position: relative;
+      background-color: $color-dark-grey;
+      min-width: 100px;
+      min-height: 100px;
+      padding: 20px;
+  }
+
+  .title {
+      font-size: 1.2em;
+  }
+
+  .btnClose {
+      position: absolute;
+      top: 0;
+      right: 0;
+  }
+}

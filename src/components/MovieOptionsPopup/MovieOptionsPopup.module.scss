@@ -1,0 +1,25 @@
+@import '~/assets/styles/variables.scss';
+
+.MovieOptionsPopup {
+  background-color: $color-dark-grey;
+  border-radius: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border: 2px solid $color-white;
+  
+  .optionsContainer {
+    width: 200px;
+  }
+  
+  button {
+    margin: 0;
+    width: 100%;
+    font-size: 1em;
+    border-radius: 0;
+    background-color: $color-dark-grey;
+    &:hover {
+      background-color: $color-pink;
+    }
+
+  }
+}

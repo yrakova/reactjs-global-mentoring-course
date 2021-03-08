@@ -19,6 +19,8 @@
     "import/extensions": "off",
     "import/prefer-default-export": "off",
     "react/button-has-type": "off",
-    "jsx-a11y/alt-text": "off"
+    "jsx-a11y/alt-text": "off",
+    "react/prefer-stateless-function": "off",
+    "react/sort-comp": "off"
   }
 }

@@ -6,6 +6,7 @@ const MovieTable = () => (
   <div className={styles.MovieTable}>
     <MovieList />
   </div>
+
 );
 
 MovieTable.propTypes = {};
