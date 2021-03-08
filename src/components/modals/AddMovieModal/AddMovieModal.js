@@ -5,12 +5,15 @@ import ModalBase from '../ModalBase/ModalBase';
 
 class AddMovieModal extends React.Component {
   render() {
-    const { show, movieId, onAction } = this.props;
+    const { show, onAction, isEdit } = this.props;
 
     return show ? (
-      <ModalBase>
-        <div className={styles.AddMovieModal}>
-          <button onClick={() => onAction('cancel', movieId)}>✕</button>
+      <ModalBase title="Add Movie" onClose={() => onAction('close')}>
+        <div className={styles.AddMovieModal} />
+
+        <div className={styles.buttonsContainer}>
+          <button>RESET</button>
+          <button>{isEdit ? 'SAVE' : 'SUBMIT'}</button>
         </div>
       </ModalBase>
     ) : null;
@@ -19,10 +22,12 @@ class AddMovieModal extends React.Component {
 
 AddMovieModal.propTypes = {
   onAction: PropTypes.func,
+  isEdit: PropTypes.bool,
 };
 
 AddMovieModal.defaultProps = {
   onAction: () => {},
+  isEdit: false,
 };
 
 export default AddMovieModal;

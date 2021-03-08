@@ -1,1 +1,11 @@
-.AddMovieModal {}
+.AddMovieModal {
+    font-size: 1em;
+
+    .buttonsContainer {
+        display: flex;
+        justify-content: right space-between;                
+    }
+
+    button {        
+    }
+}
