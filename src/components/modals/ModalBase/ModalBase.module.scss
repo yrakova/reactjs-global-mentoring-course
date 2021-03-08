@@ -1,4 +1,4 @@
-@import "~/assets/styles/variables.scss";
+@import '~/assets/styles/variables.scss';
 
 .ModalBase {
   background-color: rgba(0, 0, 0, 0.5);
@@ -14,20 +14,22 @@
   font-family: $regular-font;
 
   .container {
-      position: relative;
-      background-color: $color-dark-grey;
-      min-width: 100px;
-      min-height: 100px;
-      padding: 20px;
+    position: relative;
+    background-color: $color-dark-grey;
+    min-width: 100px;
+    min-height: 100px;
+    padding: 20px;
+    width: 40%;
   }
 
   .title {
-      font-size: 1.2em;
+    font-size: 2em;
+    margin: 0;
   }
 
   .btnClose {
-      position: absolute;
-      top: 0;
-      right: 0;
-  }
+    position: absolute;
+    top: 0;
+    right: 0;
+  }  
 }

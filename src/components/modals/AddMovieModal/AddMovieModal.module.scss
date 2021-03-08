@@ -1,11 +1,11 @@
 .AddMovieModal {
-    font-size: 1em;
+  font-size: 1em;
 
-    .buttonsContainer {
-        display: flex;
-        justify-content: right space-between;                
-    }
+  .buttonsContainer {
+    text-align: right;    
+  }
 
-    button {        
-    }
+  button {
+    margin: 5px;
+  }
 }
