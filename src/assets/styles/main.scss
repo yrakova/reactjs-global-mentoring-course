@@ -10,13 +10,18 @@ body {
   margin: 0 auto;
   padding: 10px 20px;
   max-width: 1200px;
-}
-
-.app {
   font-family: $primary-font;
   text-align: center;
   color: $color-light-grey;
-  font-size: 20px;
+  font-size: 20px;  
+}
+
+#modal-root {
+  position: relative;
+  z-index: 999;  
+}
+
+.app {  
 }
 
 h1 {
@@ -26,4 +31,19 @@ h1 {
 button {
   cursor: pointer;
   border: none;
+  border-radius: 5px;
+  font-size: 1.5em;
+  color: $color-white;
+  background-color: $color-pink;
+  padding: 10px;
+  outline: none;
+
+  &:hover {
+    color: $color-white;
+    background-color: $color-light-grey;
+  }
+}
+
+.hidden {
+  display: none;
 }

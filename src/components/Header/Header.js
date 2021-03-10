@@ -2,12 +2,13 @@ import React from 'react';
 import styles from './Header.module.scss';
 import SearchElement from '~/components/SearchElement';
 import Logo from '../Logo';
+import AddMovieButton from '../AddMovieButton/AddMovieButton';
 
 const Header = () => (
   <>
     <div className={styles.Header}>
       <Logo />
-      <button>+ Add Movie</button>
+      <AddMovieButton />
     </div>
     <SearchElement />
   </>
