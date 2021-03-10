@@ -9,28 +9,30 @@ const FormField = ({
   onChange,
   value,
   placeholder,
-}) => (
-  <div className={styles.FormField}>
-    <label>{label}</label>
+}) => {
+  const inputProps = {
+    readOnly: !isEditable,
+    onChange: isEditable ? onChange : null,
+    placeholder,
+    value,
+  };
+  return (
+    <div className={styles.FormField}>
+      <label>{label}</label>
 
-    {type === 'textarea' ? (
-      <textarea
-        readOnly={!isEditable}
-        onChange={isEditable ? onChange : null}
-        placeholder={placeholder}
-        value={value}
-      />
-    ) : (
-      <input
-        type={type}
-        readOnly={!isEditable}
-        onChange={isEditable ? onChange : null}
-        placeholder={placeholder}
-        value={value}
-      />
-    )}
-  </div>
-);
+      {type === 'textarea' ? (
+        <textarea
+          {...inputProps}
+        />
+      ) : (
+        <input
+          type={type}
+          {...inputProps}
+        />
+      )}
+    </div>
+  );
+};
 
 FormField.propTypes = {
   label: PropTypes.string.isRequired,
