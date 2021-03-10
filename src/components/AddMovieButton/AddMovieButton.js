@@ -6,25 +6,27 @@ class AddMovieButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = { showAddMovieForm: false };
-
-    this.onAddMovieAction = this.onAddMovieAction.bind(this);
-    this.openAddMovieForm = this.openAddMovieForm.bind(this);
   }
 
-  onAddMovieAction() {
+  onAddMovieAction = () => {
     this.setState({ showAddMovieForm: false });
-  }
+  };
 
-  openAddMovieForm() {
+  openAddMovieForm = () => {
     this.setState({ showAddMovieForm: true });
-  }
+  };
 
   render() {
     const { showAddMovieForm } = this.state;
     return (
       <>
-        <button className={styles.btnAddMovie} onClick={this.openAddMovieForm}>+Add Movie</button>
-        <AddMovieModal show={showAddMovieForm} onAction={this.onAddMovieAction} />
+        <button className={styles.btnAddMovie} onClick={this.openAddMovieForm}>
+          +Add Movie
+        </button>
+        <AddMovieModal
+          show={showAddMovieForm}
+          onAction={this.onAddMovieAction}
+        />
       </>
     );
   }

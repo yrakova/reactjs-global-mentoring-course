@@ -15,13 +15,9 @@ class MovieList extends React.Component {
       showDeleteForm: false,
       selectedMovieId: null,
     };
-
-    this.optionsHandler = this.optionsHandler.bind(this);
-    this.onDeleteFormAction = this.onDeleteFormAction.bind(this);
-    this.onEditFormAction = this.onEditFormAction.bind(this);
   }
 
-  optionsHandler(action, movieId) {
+  optionsHandler = (action, movieId) => {
     this.setState({ selectedMovieId: movieId });
     switch (action) {
       case 'edit':
@@ -37,7 +33,7 @@ class MovieList extends React.Component {
     }
   }
 
-  onDeleteFormAction(action, movieId) {
+  onDeleteFormAction = (action, movieId) => {
     switch (action) {
       case 'confirm':
         alert(`Movie ${movieId} to be deleted!`);
@@ -51,7 +47,7 @@ class MovieList extends React.Component {
     }
   }
 
-  onEditFormAction(action, movieId) {
+  onEditFormAction = (action, movieId) => {
     this.setState({ showEditForm: false, selectedMovieId: null });
   }
 

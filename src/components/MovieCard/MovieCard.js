@@ -9,23 +9,19 @@ class MovieCard extends React.Component {
     this.state = {
       showOptionsPopup: false,
     };
-
-    this.toggleOptionsPopup = this.toggleOptionsPopup.bind(this);
-    this.onOptionsPopupAction = this.onOptionsPopupAction.bind(this);
-    this.hideOptionsPopup = this.hideOptionsPopup.bind(this);
   }
 
-  onOptionsPopupAction(action) {
+  onOptionsPopupAction = (action) => {
     const { optionsHandler, movie: { id } } = this.props;
     optionsHandler(action, id);
     this.hideOptionsPopup();
   }
 
-  hideOptionsPopup() {
+  hideOptionsPopup = () => {
     this.setState({ showOptionsPopup: false });
   }
 
-  toggleOptionsPopup() {
+  toggleOptionsPopup = () => {
     const { showOptionsPopup } = this.state;
     this.setState({ showOptionsPopup: !showOptionsPopup });
   }
