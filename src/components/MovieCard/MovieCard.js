@@ -22,15 +22,11 @@ class MovieCard extends React.Component {
   }
 
   toggleOptionsPopup = () => {
-    const { showOptionsPopup } = this.state;
-    this.setState({ showOptionsPopup: !showOptionsPopup });
+    this.setState((prevState) => ({ showOptionsPopup: !prevState.showOptionsPopup }));
   }
 
   render() {
-    const { movie } = this.props;
-    const {
-      title, year, posterUri,
-    } = movie;
+    const { movie: { title, year, posterUri } } = this.props;
     const { showOptionsPopup } = this.state;
     return (
       <>

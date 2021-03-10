@@ -33,7 +33,7 @@ export default class ModalBase extends React.Component {
       // Any valid React child: JSX, strings, arrays, etc.
       <div className={styles.ModalBase}>
         <div className={styles.container}>
-          <button className={styles.btnClose} onClick={() => onClose()}>✕</button>
+          <button className={styles.btnClose} onClick={onClose}>✕</button>
           <p className={styles.title}>{title}</p>
           {children}
         </div>

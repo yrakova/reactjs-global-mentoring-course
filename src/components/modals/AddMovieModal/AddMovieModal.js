@@ -26,7 +26,7 @@ const GENRES_OPTIONS = GENRES.map((genre) => ({
 }));
 
 class AddMovieModal extends React.Component {
-  onReset() {
+  onReset = () => {
     // TODO clear form
   }
 
@@ -56,7 +56,7 @@ class AddMovieModal extends React.Component {
               />
             )))}
           <div className={styles.buttonsContainer}>
-            <button onClick={() => this.onReset()}>RESET</button>
+            <button onClick={this.onReset}>RESET</button>
             <button>{isEdit ? 'SAVE' : 'SUBMIT'}</button>
           </div>
         </div>
