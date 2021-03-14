@@ -6,22 +6,26 @@ html {
 }
 
 body {
-  background-color: $color-dark-grey;
   margin: 0 auto;
-  padding: 10px 20px;
   max-width: 1200px;
   font-family: $primary-font;
   text-align: center;
   color: $color-light-grey;
-  font-size: 20px;  
+  font-size: 20px;
 }
 
 #modal-root {
   position: relative;
-  z-index: 999;  
+  z-index: 999;
 }
 
-.app {  
+.mainContainer {
+  .headerContainer {    
+    margin-bottom: 20px;
+  }
+  .container {
+    background-color: $color-dark-grey;
+  }
 }
 
 h1 {

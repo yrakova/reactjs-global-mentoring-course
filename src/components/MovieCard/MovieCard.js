@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './MovieCard.module.scss';
 import MovieOptionsPopup from '../MovieOptionsPopup/MovieOptionsPopup';
+import MovieContext from '../../MovieContext';
 
 class MovieCard extends React.Component {
   constructor(props) {
@@ -21,37 +22,50 @@ class MovieCard extends React.Component {
     this.setState({ showOptionsPopup: false });
   }
 
-  toggleOptionsPopup = () => {
+  toggleOptionsPopup = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     this.setState((prevState) => ({ showOptionsPopup: !prevState.showOptionsPopup }));
   }
 
+  onMovieSelect = () => {
+
+  }
+
   render() {
-    const { movie: { title, year, posterUri } } = this.props;
+    const { movie } = this.props;
+    const { title, year, posterUri } = movie;
     const { showOptionsPopup } = this.state;
     return (
-      <>
-        <div className={styles.MovieCard}>
-          <div className={styles.imgContainer}>
-            <img src={posterUri} />
-            <button
-              className={styles.btnOptions}
-              onClick={this.toggleOptionsPopup}
-            >
-              ...
-            </button>
-          </div>
-          <div className={styles.descriptionContainer}>
-            <p className={styles.title}>{title}</p>
-            <p className={styles.year}>{year}</p>
-          </div>
-          <div className={styles.optionsContainer}>
-            <MovieOptionsPopup
-              show={showOptionsPopup}
-              onAction={this.onOptionsPopupAction}
-            />
-          </div>
-        </div>
-      </>
+      <MovieContext.Consumer>
+        {(
+          { setSelectedMovie },
+        ) => (
+          <>
+            <div className={styles.MovieCard} onClick={() => setSelectedMovie(movie)} role="button">
+              <div className={styles.imgContainer}>
+                <img src={posterUri} />
+                <button
+                  className={styles.btnOptions}
+                  onClick={this.toggleOptionsPopup}
+                >
+                  ...
+                </button>
+              </div>
+              <div className={styles.descriptionContainer}>
+                <p className={styles.title}>{title}</p>
+                <p className={styles.year}>{year}</p>
+              </div>
+              <div className={styles.optionsContainer}>
+                <MovieOptionsPopup
+                  show={showOptionsPopup}
+                  onAction={this.onOptionsPopupAction}
+                />
+              </div>
+            </div>
+          </>
+        )}
+      </MovieContext.Consumer>
     );
   }
 }
