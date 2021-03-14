@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import styles from './MovieDetails.module.scss';
 import zoomIcon from '~/assets/images/magnifying_glass.svg';
+import { MoviePropTypes } from '~/utils/CommonPropTypes';
 
 const MovieDetails = ({ movie, onBack }) => {
   const {
@@ -39,14 +40,7 @@ const MovieDetails = ({ movie, onBack }) => {
 };
 
 MovieDetails.propTypes = {
-  movie: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    year: PropTypes.number.isRequired,
-    posterUri: PropTypes.string.isRequired,
-    runtime: PropTypes.number.isRequired,
-    rating: PropTypes.number,
-  }).isRequired,
+  movie: MoviePropTypes.isRequired,
   onBack: PropTypes.func,
 };
 
