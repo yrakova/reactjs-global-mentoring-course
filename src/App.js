@@ -1,4 +1,4 @@
-import React, { StrictMode, useState } from 'react';
+import React, { StrictMode, useEffect, useState } from 'react';
 import Header from './components/Header';
 import MovieTable from './components/MovieTable';
 import Footer from './components/Footer';
@@ -12,6 +12,10 @@ export const App = () => {
   const resetSelectedMovie = () => {
     setSelectedMovie(null);
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [selectedMovie]);
 
   return (
     <StrictMode>
