@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './FormField.module.scss';
 
@@ -10,11 +10,17 @@ const FormField = ({
   value,
   placeholder,
 }) => {
+  const [inputValue, setInputValue] = useState(value);
+
+  const onInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
   const inputProps = {
     readOnly: !isEditable,
-    onChange: isEditable ? onChange : null,
+    onChange: isEditable ? onInputChange : null,
     placeholder,
-    value,
+    value: inputValue,
   };
   return (
     <div className={styles.FormField}>
