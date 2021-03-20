@@ -1,0 +1,107 @@
+@import '~/assets/styles/variables.scss';
+
+$rating-circle-diameter: 70px;
+
+.MovieDetails {
+  text-align: center;
+  padding: 20px;
+  display: flex;
+  color: $color-white;
+  font-weight: 200;
+  position: relative;
+
+  .imgContainer {
+    position: relative;
+    width: 200px;
+    min-width: 200px;
+    height: 300px;
+    min-height: 300px;
+    margin: 20px;
+
+    img.poster {
+      top: 0;
+      left: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  button.btnZoom {
+    background-color: rgba(0, 0, 0, 0);
+    top: 20px;
+    right: 20px;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0);
+      transform: scale(1.1);
+    }
+    &:active {
+      transform: scale(0.9);
+    }
+  }
+
+  .infoContainer {
+    .title {
+      font-size: 2em;
+      margin: 0;
+    }
+
+    .year,
+    .runtime {
+      font-size: 1.5em;
+      color: $color-pink;
+    }
+
+    .rating {
+      font-size: 1.5em;
+      font-weight: 300;
+      margin: 0;
+      transform: translateY(50%);
+      &__high {
+        color: $color-rating-high;
+      }
+      &__medium {
+        color: $color-rating-medium;
+      }
+      &__low {
+        color: $color-rating-low;
+      }
+    }
+
+    .description {
+      font-family: $regular-font;
+      text-align: left;
+    }
+
+    .circleContainer {
+      position: relative;
+      width: $rating-circle-diameter;
+      height: $rating-circle-diameter;
+    }
+
+    .circle {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: $rating-circle-diameter;
+      width: $rating-circle-diameter;
+      border: 1px solid $color-white;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .row {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+
+      > * {
+        padding-right: 30px;
+      }
+    }
+  }
+}

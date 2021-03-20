@@ -5,6 +5,7 @@ import ModalBase from '../ModalBase/ModalBase';
 import { GENRES } from '~/services/mock-data';
 import FormField from '../../FormField/FormField';
 import FormFieldSelect from '../../FormField/FormFieldSelect';
+import { MoviePropTypes } from '~/utils/CommonPropTypes';
 
 const FIELDS = [
   {
@@ -25,55 +26,50 @@ const GENRES_OPTIONS = GENRES.map((genre) => ({
   label: genre.label,
 }));
 
-class AddMovieModal extends React.Component {
-  onReset = () => {
+const AddMovieModal = ({
+  show, onAction, isEdit, movie,
+}) => {
+  const onReset = () => {
     // TODO clear form
-  }
+  };
 
-  render() {
-    const {
-      show, onAction, isEdit, movie,
-    } = this.props;
+  const onSaveOrSubmit = () => {
+    // TODO
+  };
 
-    return show ? (
-      <ModalBase title={isEdit ? 'Edit Movie' : 'Add Movie'} onClose={() => onAction('close')}>
-        <div className={styles.AddMovieModal}>
-          {FIELDS
-            .filter((field) => !field.readOnly || isEdit)
-            .map((field) => (field.type === 'select' ? (
-              <FormFieldSelect
-                key={field.label}
-                label={field.label}
-                options={GENRES_OPTIONS}
-              />
-            ) : (
-              <FormField
-                key={field.label}
-                label={field.label}
-                type={field.type}
-                isEditable={!field.readOnly}
-                value={isEdit ? movie[field.key] : ''}
-              />
-            )))}
-          <div className={styles.buttonsContainer}>
-            <button onClick={this.onReset}>RESET</button>
-            <button>{isEdit ? 'SAVE' : 'SUBMIT'}</button>
-          </div>
+  return show ? (
+    <ModalBase title={isEdit ? 'Edit Movie' : 'Add Movie'} onClose={() => onAction('close')}>
+      <div className={styles.AddMovieModal}>
+        {FIELDS
+          .filter((field) => !field.readOnly || isEdit)
+          .map((field) => (field.type === 'select' ? (
+            <FormFieldSelect
+              key={field.label}
+              label={field.label}
+              options={GENRES_OPTIONS}
+            />
+          ) : (
+            <FormField
+              key={field.label}
+              label={field.label}
+              type={field.type}
+              isEditable={!field.readOnly}
+              value={isEdit ? movie[field.key] : ''}
+            />
+          )))}
+        <div className={styles.buttonsContainer}>
+          <button onClick={onReset}>RESET</button>
+          <button onClick={onSaveOrSubmit}>{isEdit ? 'SAVE' : 'SUBMIT'}</button>
         </div>
-      </ModalBase>
-    ) : null;
-  }
-}
+      </div>
+    </ModalBase>
+  ) : null;
+};
 
 AddMovieModal.propTypes = {
   onAction: PropTypes.func,
   isEdit: PropTypes.bool,
-  movie: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    year: PropTypes.number.isRequired,
-    posterUri: PropTypes.string.isRequired,
-  }),
+  movie: MoviePropTypes,
 };
 
 AddMovieModal.defaultProps = {

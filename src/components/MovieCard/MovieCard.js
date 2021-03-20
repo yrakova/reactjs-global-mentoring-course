@@ -1,68 +1,62 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './MovieCard.module.scss';
 import MovieOptionsPopup from '../MovieOptionsPopup/MovieOptionsPopup';
+import MovieContext from '../../MovieContext';
+import { MoviePropTypes } from '~/utils/CommonPropTypes';
 
-class MovieCard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showOptionsPopup: false,
-    };
-  }
+const MovieCard = ({ movie, optionsHandler }) => {
+  const {
+    title, year, posterUri, id,
+  } = movie;
 
-  onOptionsPopupAction = (action) => {
-    const { optionsHandler, movie: { id } } = this.props;
+  const [showOptionsPopup, setShowOptionsPopup] = useState(false);
+  const { setSelectedMovie } = useContext(MovieContext);
+
+  const hideOptionsPopup = () => {
+    setShowOptionsPopup(false);
+  };
+
+  const onOptionsPopupAction = (action) => {
     optionsHandler(action, id);
-    this.hideOptionsPopup();
-  }
+    hideOptionsPopup();
+  };
 
-  hideOptionsPopup = () => {
-    this.setState({ showOptionsPopup: false });
-  }
+  const toggleOptionsPopup = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowOptionsPopup(!showOptionsPopup);
+  };
 
-  toggleOptionsPopup = () => {
-    this.setState((prevState) => ({ showOptionsPopup: !prevState.showOptionsPopup }));
-  }
-
-  render() {
-    const { movie: { title, year, posterUri } } = this.props;
-    const { showOptionsPopup } = this.state;
-    return (
-      <>
-        <div className={styles.MovieCard}>
-          <div className={styles.imgContainer}>
-            <img src={posterUri} />
-            <button
-              className={styles.btnOptions}
-              onClick={this.toggleOptionsPopup}
-            >
-              ...
-            </button>
-          </div>
-          <div className={styles.descriptionContainer}>
-            <p className={styles.title}>{title}</p>
-            <p className={styles.year}>{year}</p>
-          </div>
-          <div className={styles.optionsContainer}>
-            <MovieOptionsPopup
-              show={showOptionsPopup}
-              onAction={this.onOptionsPopupAction}
-            />
-          </div>
+  return (
+    <>
+      <div className={styles.MovieCard} onClick={() => setSelectedMovie(movie)} role="button">
+        <div className={styles.imgContainer}>
+          <img src={posterUri} />
+          <button
+            className={styles.btnOptions}
+            onClick={toggleOptionsPopup}
+          >
+            ...
+          </button>
         </div>
-      </>
-    );
-  }
-}
+        <div className={styles.descriptionContainer}>
+          <p className={styles.title}>{title}</p>
+          <p className={styles.year}>{year}</p>
+        </div>
+        <div className={styles.optionsContainer}>
+          <MovieOptionsPopup
+            show={showOptionsPopup}
+            onAction={onOptionsPopupAction}
+          />
+        </div>
+      </div>
+    </>
+  );
+};
 
 MovieCard.propTypes = {
-  movie: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    year: PropTypes.number.isRequired,
-    posterUri: PropTypes.string.isRequired,
-  }).isRequired,
+  movie: MoviePropTypes.isRequired,
   optionsHandler: PropTypes.func,
 };
 

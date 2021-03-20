@@ -8,6 +8,8 @@ const mockMoviesData = {
       genres: ['thriller', 'comedy', 'crime'],
       year: 1994,
       posterUri: '/public/images/posters/pulp_fiction.jpg',
+      runtime: 120,
+      rating: 4.9,
     },
     {
       id: '2',
@@ -17,6 +19,8 @@ const mockMoviesData = {
       genres: ['drama', 'biography', 'music'],
       year: 2018,
       posterUri: '/public/images/posters/bohemian-rhapsody.jpg',
+      runtime: 121,
+      rating: 4.8,
     },
     {
       id: '3',
@@ -26,6 +30,8 @@ const mockMoviesData = {
       genres: ['action', 'thriller', 'crime'],
       year: 2004,
       posterUri: '/public/images/posters/kill_bill_v2.jpg',
+      runtime: 110,
+      rating: 4.7,
     },
     {
       id: '4',
@@ -35,6 +41,8 @@ const mockMoviesData = {
       genres: ['cartoon', 'music', 'fantasy', 'comedy', 'adventure', 'family'],
       year: 2016,
       posterUri: '/public/images/posters/moana.jpg',
+      runtime: 107,
+      rating: 4.5,
     },
     {
       id: '5',
@@ -44,6 +52,8 @@ const mockMoviesData = {
       genres: ['fantasy', 'drama', 'adventure'],
       year: 2014,
       posterUri: '/public/images/posters/interstellar.jpg',
+      runtime: 130,
+      rating: 4.2,
     },
     {
       id: '6',
@@ -53,6 +63,8 @@ const mockMoviesData = {
       year: 1990,
       genres: ['melodrama', 'comedy'],
       posterUri: '/public/images/posters/pretty_woman.jpg',
+      runtime: 90,
+      rating: 5.0,
     },
   ],
 };
