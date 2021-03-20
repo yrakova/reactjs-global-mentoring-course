@@ -28,25 +28,28 @@ const MovieList = () => {
     }
   };
 
+  const resetState = () => {
+    setShowDeleteForm(false);
+    setShowEditForm(false);
+    setCurrentMovieId(null);
+  };
+
   const onDeleteFormAction = (action, movieId) => {
     switch (action) {
       case 'confirm':
         alert(`Movie ${movieId} to be deleted!`);
-        setShowDeleteForm(false);
-        setCurrentMovieId(null);
+        resetState();
         break;
       case 'close':
-        setShowDeleteForm(false);
-        setCurrentMovieId(null);
+        resetState();
         break;
       default:
         throw new Error(`Unknown action from Delete From: ${action}`);
     }
   };
 
-  const onEditFormAction = (action, movieId) => {
-    setShowEditForm(false);
-    setCurrentMovieId(null);
+  const onEditFormAction = () => {
+    resetState();
   };
 
   return (
