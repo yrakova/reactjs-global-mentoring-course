@@ -27,14 +27,9 @@ const FormField = ({
       <label>{label}</label>
 
       {type === 'textarea' ? (
-        <textarea
-          {...inputProps}
-        />
+        <textarea {...inputProps} />
       ) : (
-        <input
-          type={type}
-          {...inputProps}
-        />
+        <input type={type} {...inputProps} />
       )}
     </div>
   );
@@ -45,7 +40,7 @@ FormField.propTypes = {
   type: PropTypes.string,
   onChange: PropTypes.func,
   isEditable: PropTypes.bool,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType(PropTypes.string, PropTypes.number),
   placeholder: PropTypes.string,
 };
 

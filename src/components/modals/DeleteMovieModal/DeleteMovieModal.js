@@ -19,7 +19,7 @@ const DeleteMovieModal = (props) => {
 DeleteMovieModal.propTypes = {
   show: PropTypes.bool,
   onAction: PropTypes.func,
-  movieId: PropTypes.string,
+  movieId: PropTypes.number,
 };
 
 DeleteMovieModal.defaultProps = {

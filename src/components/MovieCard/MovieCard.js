@@ -7,8 +7,10 @@ import { MoviePropTypes } from '~/utils/CommonPropTypes';
 
 const MovieCard = ({ movie, optionsHandler }) => {
   const {
-    title, year, posterUri, id,
+    title, release_date, poster_path, id,
   } = movie;
+
+  const year = new Date(release_date).getFullYear();
 
   const [showOptionsPopup, setShowOptionsPopup] = useState(false);
   const { setSelectedMovie } = useContext(MovieContext);
@@ -32,7 +34,7 @@ const MovieCard = ({ movie, optionsHandler }) => {
     <>
       <div className={styles.MovieCard} onClick={() => setSelectedMovie(movie)} role="button">
         <div className={styles.imgContainer}>
-          <img src={posterUri} />
+          <img src={poster_path} />
           <button
             className={styles.btnOptions}
             onClick={toggleOptionsPopup}
