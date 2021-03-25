@@ -4,11 +4,11 @@ import MovieCardErrorBoundary from '~/components/error-boundaries/MovieCardError
 import MovieCard from '~/components/MovieCard';
 import DeleteMovieModal from '../../modals/DeleteMovieModal';
 import AddMovieModal from '../../modals/AddMovieModal';
-import { getMovies } from '../../../store/actions-creator';
+import { getMovies, deleteMovie } from '../../../store/actions-creator';
 
 const getMovieById = (id, movies) => movies.find((movie) => movie.id === id);
 
-const MovieList = ({ movies, fetchMovies }) => {
+const MovieList = ({ movies, fetchMovies, deleteMovie }) => {
   const [showEditForm, setShowEditForm] = useState(false);
   const [showDeleteForm, setShowDeleteForm] = useState(false);
   const [currentMovieId, setCurrentMovieId] = useState(null);
@@ -42,7 +42,7 @@ const MovieList = ({ movies, fetchMovies }) => {
   const onDeleteFormAction = (action, movieId) => {
     switch (action) {
       case 'confirm':
-        alert(`Movie ${movieId} to be deleted!`);
+        deleteMovie(movieId);
         resetState();
         break;
       case 'close':
@@ -89,6 +89,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchMovies: () => dispatch(getMovies()),
+  deleteMovie: (movieId) => dispatch(deleteMovie(movieId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieList);
