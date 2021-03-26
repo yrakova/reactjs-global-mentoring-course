@@ -70,18 +70,25 @@ const mockMoviesData = {
 };
 
 const GENRES = [
-  { id: 1, label: 'melodrama' },
-  { id: 2, label: 'comedy' },
-  { id: 3, label: 'fantasy' },
-  { id: 4, label: 'drama' },
-  { id: 5, label: 'adventure' },
-  { id: 6, label: 'cartoon' },
-  { id: 7, label: 'music' },
-  { id: 8, label: 'family' },
-  { id: 9, label: 'action' },
-  { id: 10, label: 'thriller' },
-  { id: 11, label: 'crime' },
-  { id: 12, label: 'biography' },
+  'Drama',
+  'Romance',
+  'Animation',
+  'Adventure',
+  'Family',
+  'Comedy',
+  'Fantasy',
+  'Science Fiction',
+  'Action',
+  'Mystery',
+  'Thriller',
+  'Music',
+  'War',
+  'Crime',
+  'History',
+  'Horror',
+  'Western',
+  'Documentary',
+  'TV Movie',
 ];
 
 const SORT_BY_VALUES = [

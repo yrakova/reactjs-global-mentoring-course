@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './FormField.module.scss';
 
@@ -9,11 +9,16 @@ const FormField = ({
   onChange,
   value,
   placeholder,
+  fieldKey,
 }) => {
   const [inputValue, setInputValue] = useState(value);
 
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
+
   const onInputChange = (e) => {
-    setInputValue(e.target.value);
+    onChange(fieldKey, e.target.value);
   };
 
   const inputProps = {

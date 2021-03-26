@@ -6,6 +6,6 @@ export const MoviePropTypes = PropTypes.shape({
   overview: PropTypes.string.isRequired,
   release_date: PropTypes.string.isRequired,
   poster_path: PropTypes.string.isRequired,
-  runtime: PropTypes.number.isRequired,
+  runtime: PropTypes.number,
   vote_average: PropTypes.number,
 });
