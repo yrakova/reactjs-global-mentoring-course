@@ -40,9 +40,7 @@ const MovieDetails = ({ movie, onBack }) => {
         <div className={styles.row}>
           <p className={styles.year}>{year}</p>
           <p className={styles.runtime}>
-            {runtime}
-            {' '}
-            min
+            {runtime && `${runtime} min`}
           </p>
         </div>
         <p className={styles.description}>{description}</p>

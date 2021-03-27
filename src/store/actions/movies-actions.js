@@ -136,15 +136,21 @@ export const updateMovie = (movie) => (dispatch) => {
   })
     .then((response) => {
       if (response.ok) {
+        alert('Movie is successfully updated');
         dispatch(RESOLVED_UPDATE_MOVIE(movieId));
       } else {
-        alert(`Can't update movie with id ${movieId}`);
-        dispatch(FAILED_UPDATE_MOVIE(movieId));
+        return response.json().then((json) => {
+          const errorText = `Can't update movie ${
+            movie.id
+          }:${json.messages.map((msg) => `\n- ${msg}`)}`;
+          return Promise.reject(errorText);
+        });
       }
     })
     .catch((error) => {
       alert(error);
       dispatch(FAILED_UPDATE_MOVIE(movieId));
+      return Promise.reject(error);
     });
 };
 // ...UPDATE MOVIE
@@ -188,6 +194,7 @@ export const createMovie = (movie) => (dispatch) => {
     .catch((error) => {
       alert(error);
       dispatch(FAILED_CREATE_MOVIE());
+      return Promise.reject(error);
     });
 };
 // ...CREATE MOVIE

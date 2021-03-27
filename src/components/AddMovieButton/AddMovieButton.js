@@ -14,7 +14,7 @@ export const AddMovieButton = ({ requestCreateMovie }) => {
         setShowAddMovieForm(false);
         break;
       case 'create':
-        requestCreateMovie(mutableMovie);
+        requestCreateMovie(mutableMovie).then(() => setShowAddMovieForm(false));
         break;
       default:
         throw new Error(`Unsupported action ${formAction} for Add Movie form`);

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './MovieCard.module.scss';
 import MovieOptionsPopup from '../MovieOptionsPopup/MovieOptionsPopup';
@@ -13,7 +13,13 @@ const MovieCard = ({ movie, optionsHandler }) => {
   const year = release_date ? new Date(release_date).getFullYear() : 'N/A';
 
   const [showOptionsPopup, setShowOptionsPopup] = useState(false);
-  const { setSelectedMovie } = useContext(MovieContext);
+  const { selectedMovie, setSelectedMovie } = useContext(MovieContext);
+
+  useEffect(() => {
+    if (selectedMovie && selectedMovie.id === movie.id) {
+      setSelectedMovie(movie);
+    }
+  }, [movie]);
 
   const hideOptionsPopup = () => {
     setShowOptionsPopup(false);
