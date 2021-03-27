@@ -47,12 +47,20 @@ const AddMovieModal = ({
   };
 
   const onSaveOrSubmit = () => {
-    // TODO
+    const actionName = isEdit ? 'update' : 'create';
+    onAction(actionName, mutableMovie);
   };
 
   const onInputChange = (fieldKey, newValue) => {
     const newMutableMovie = { ...mutableMovie, [fieldKey]: newValue };
     setMutableMovie(newMutableMovie);
+  };
+
+  const onSelectInputChange = (fieldKey, newValues) => {
+    if (newValues) {
+      const newMutableMovie = { ...mutableMovie, [fieldKey]: newValues.map(({ value }) => value) };
+      setMutableMovie(newMutableMovie);
+    }
   };
 
   return show ? (
@@ -66,6 +74,9 @@ const AddMovieModal = ({
             key={field.label}
             label={field.label}
             options={GENRES_OPTIONS}
+            onChange={(newValues) => {
+              onSelectInputChange(field.key, newValues);
+            }}
             value={mapOptions(mutableMovie[field.key])}
           />
         ) : (
@@ -74,8 +85,7 @@ const AddMovieModal = ({
             label={field.label}
             type={field.type}
             isEditable={!field.readOnly}
-            onChange={onInputChange}
-            fieldKey={field.key}
+            onChange={(e) => onInputChange(field.key, e.target.value)}
             value={mutableMovie[field.key]}
           />
         )))}

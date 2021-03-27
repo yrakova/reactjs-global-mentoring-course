@@ -4,11 +4,13 @@ import MovieCardErrorBoundary from '~/components/error-boundaries/MovieCardError
 import MovieCard from '~/components/MovieCard';
 import DeleteMovieModal from '../../modals/DeleteMovieModal';
 import AddMovieModal from '../../modals/AddMovieModal';
-import { getMovies, deleteMovie } from '../../../store/actions-creator';
+import { getMovies, deleteMovie, updateMovie } from '../../../store/actions-creator';
 
 const getMovieById = (id, movies) => movies.find((movie) => movie.id === id);
 
-const MovieList = ({ movies, fetchMovies, deleteMovie }) => {
+const MovieList = ({
+  movies, fetchMovies, requestDeleteMovie, requestUpdateMovie,
+}) => {
   const [showEditForm, setShowEditForm] = useState(false);
   const [showDeleteForm, setShowDeleteForm] = useState(false);
   const [currentMovieId, setCurrentMovieId] = useState(null);
@@ -42,7 +44,7 @@ const MovieList = ({ movies, fetchMovies, deleteMovie }) => {
   const onDeleteFormAction = (action, movieId) => {
     switch (action) {
       case 'confirm':
-        deleteMovie(movieId);
+        requestDeleteMovie(movieId);
         resetState();
         break;
       case 'close':
@@ -53,8 +55,19 @@ const MovieList = ({ movies, fetchMovies, deleteMovie }) => {
     }
   };
 
-  const onEditFormAction = () => {
-    resetState();
+  const onEditFormAction = (formAction, mutableMovie = null) => {
+    switch (formAction) {
+      case 'close':
+        resetState();
+        break;
+      case 'update':
+        requestUpdateMovie(mutableMovie).then(() => resetState());
+        break;
+      case 'create':
+        break;
+      default:
+        throw new Error(`unknown action ${formAction}`);
+    }
   };
 
   return (
@@ -89,7 +102,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchMovies: () => dispatch(getMovies()),
-  deleteMovie: (movieId) => dispatch(deleteMovie(movieId)),
+  requestDeleteMovie: (movieId) => dispatch(deleteMovie(movieId)),
+  requestUpdateMovie: (movie) => dispatch(updateMovie(movie)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieList);

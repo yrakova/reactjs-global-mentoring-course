@@ -9,7 +9,6 @@ const FormField = ({
   onChange,
   value,
   placeholder,
-  fieldKey,
 }) => {
   const [inputValue, setInputValue] = useState(value);
 
@@ -17,13 +16,9 @@ const FormField = ({
     setInputValue(value);
   }, [value]);
 
-  const onInputChange = (e) => {
-    onChange(fieldKey, e.target.value);
-  };
-
   const inputProps = {
     readOnly: !isEditable,
-    onChange: isEditable ? onInputChange : null,
+    onChange: isEditable ? onChange : null,
     placeholder,
     value: inputValue,
   };
@@ -45,7 +40,7 @@ FormField.propTypes = {
   type: PropTypes.string,
   onChange: PropTypes.func,
   isEditable: PropTypes.bool,
-  value: PropTypes.oneOfType(PropTypes.string, PropTypes.number),
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   placeholder: PropTypes.string,
 };
 
