@@ -7,7 +7,7 @@ import { MoviePropTypes } from '~/utils/CommonPropTypes';
 
 const MovieCard = ({ movie, optionsHandler }) => {
   const {
-    title, release_date, poster_path, id,
+    title, release_date, poster_path, id, genres,
   } = movie;
 
   const year = release_date ? new Date(release_date).getFullYear() : 'N/A';
@@ -45,6 +45,9 @@ const MovieCard = ({ movie, optionsHandler }) => {
         <div className={styles.descriptionContainer}>
           <p className={styles.title}>{title}</p>
           <p className={styles.year}>{year}</p>
+        </div>
+        <div className={styles.genresContainer}>
+          {genres && genres.join(', ')}
         </div>
         <div className={styles.optionsContainer}>
           <MovieOptionsPopup

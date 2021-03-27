@@ -8,4 +8,5 @@ export const MoviePropTypes = PropTypes.shape({
   poster_path: PropTypes.string.isRequired,
   runtime: PropTypes.number,
   vote_average: PropTypes.number,
+  genres: PropTypes.arrayOf(PropTypes.string),
 });

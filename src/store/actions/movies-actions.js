@@ -36,10 +36,10 @@ const config = (method = 'GET', payload) => ({
 
 // GET MOVIES...
 export const REQUEST_MOVIES = ({
-  limit, offset, sortBy, sortOrder,
+  limit, offset, sortBy, sortOrder, filters,
 }) => ({
   type: GET_MOVIES,
-  endpoint: `/movies?limit=${limit}&offset=${offset}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
+  endpoint: `/movies?limit=${limit}&offset=${offset}&sortBy=${sortBy}&sortOrder=${sortOrder}&filter=${filters.toString()}`,
   method: 'GET',
 });
 
@@ -50,10 +50,10 @@ export const RECEIVE_MOVIES = (movies) => ({
 
 export const getMovies = () => (dispatch, getState) => {
   const {
-    limit, offset, sortBy, sortOrder,
+    limit, offset, sortBy, sortOrder, filters,
   } = getState().searchReducer;
   const action = REQUEST_MOVIES({
-    limit, offset, sortBy, sortOrder,
+    limit, offset, sortBy, sortOrder, filters,
   });
   dispatch(action);
   return fetch(generateFullEndpoint(action.endpoint), {

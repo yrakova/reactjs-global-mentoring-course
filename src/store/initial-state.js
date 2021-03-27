@@ -9,4 +9,5 @@ export const SETTINGS_INITIAL_STATE = {
   offset: 0,
   sortBy: 'release_date',
   sortOrder: 'desc',
+  filters: ['Drama', 'Action'],
 };
