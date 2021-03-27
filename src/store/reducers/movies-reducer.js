@@ -1,6 +1,10 @@
 import { INITIAL_STATE } from '../initial-state';
 import {
-  GET_MOVIES, NETWORK_PROVIDER_RESOLUTION, DELETE_MOVIE, UPDATE_MOVIE,
+  GET_MOVIES,
+  NETWORK_PROVIDER_RESOLUTION,
+  DELETE_MOVIE,
+  UPDATE_MOVIE,
+  CREATE_MOVIE,
 } from '../movies-action-types';
 
 export default (state = INITIAL_STATE, action) => {
@@ -21,16 +25,16 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isLoading: true,
       };
+    case DELETE_MOVIE + NETWORK_PROVIDER_RESOLUTION.RESOLVED:
+      return {
+        ...state,
+        movies: state.movies.filter((i) => i.id !== action.payload),
+      };
     case UPDATE_MOVIE:
       return {
         ...state,
         updatingMovie: action.payload,
         isLoading: true,
-      };
-    case DELETE_MOVIE + NETWORK_PROVIDER_RESOLUTION.RESOLVED:
-      return {
-        ...state,
-        movies: state.movies.filter((i) => i.id !== action.payload),
       };
     case UPDATE_MOVIE + NETWORK_PROVIDER_RESOLUTION.RESOLVED:
       const movieIndex = state.movies.findIndex(
@@ -41,6 +45,19 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         movies,
+        isLoading: false,
+      };
+    case CREATE_MOVIE:
+      return {
+        ...state,
+        updatingMovie: action.payload,
+        isLoading: true,
+      };
+    case CREATE_MOVIE + NETWORK_PROVIDER_RESOLUTION.RESOLVED:
+    case CREATE_MOVIE + NETWORK_PROVIDER_RESOLUTION.FAILED:
+      return {
+        ...state,
+        updatingMovie: null,
         isLoading: false,
       };
     case UPDATE_MOVIE + NETWORK_PROVIDER_RESOLUTION.FAILED:

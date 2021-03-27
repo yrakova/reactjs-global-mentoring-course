@@ -1,5 +1,9 @@
 import {
-  GET_MOVIES, NETWORK_PROVIDER_RESOLUTION, DELETE_MOVIE, UPDATE_MOVIE, CREATE_MOVIE,
+  GET_MOVIES,
+  NETWORK_PROVIDER_RESOLUTION,
+  DELETE_MOVIE,
+  UPDATE_MOVIE,
+  CREATE_MOVIE,
 } from './movies-action-types';
 
 const BASE_URL = 'http://localhost:4000';
@@ -43,7 +47,9 @@ export const RECEIVE_MOVIES = (movies) => ({
 });
 
 export const getMovies = () => (dispatch, getState) => {
-  const { options: { limit, offset } } = getState().moviesReducer;
+  const {
+    options: { limit, offset },
+  } = getState().moviesReducer;
   const action = REQUEST_MOVIES({ limit, offset });
   dispatch(action);
   return fetch(generateFullEndpoint(action.endpoint), {
@@ -83,17 +89,15 @@ export const deleteMovie = (movieId) => (dispatch) => {
   return fetch(generateFullEndpoint(action.endpoint), {
     ...config(action.method, action.payload),
   })
-    .then(
-      (response) => {
-        if (response.ok) {
-          dispatch(RESOLVED_DELETE_MOVIE(movieId));
-          dispatch(getMovies());
-        } else {
-          alert(`Can't delete movie with id ${movieId}`);
-          dispatch(FAILED_DELETE_MOVIE(movieId));
-        }
-      },
-    )
+    .then((response) => {
+      if (response.ok) {
+        dispatch(RESOLVED_DELETE_MOVIE(movieId));
+        dispatch(getMovies());
+      } else {
+        alert(`Can't delete movie with id ${movieId}`);
+        dispatch(FAILED_DELETE_MOVIE(movieId));
+      }
+    })
     .catch((error) => {
       alert(error);
       dispatch(FAILED_DELETE_MOVIE(movieId));
@@ -126,19 +130,60 @@ export const updateMovie = (movie) => (dispatch) => {
   return fetch(generateFullEndpoint(action.endpoint), {
     ...config(action.method, action.payload),
   })
-    .then(
-      (response) => {
-        if (response.ok) {
-          dispatch(RESOLVED_UPDATE_MOVIE(movieId));
-        } else {
-          alert(`Can't update movie with id ${movieId}`);
-          dispatch(FAILED_UPDATE_MOVIE(movieId));
-        }
-      },
-    )
+    .then((response) => {
+      if (response.ok) {
+        dispatch(RESOLVED_UPDATE_MOVIE(movieId));
+      } else {
+        alert(`Can't update movie with id ${movieId}`);
+        dispatch(FAILED_UPDATE_MOVIE(movieId));
+      }
+    })
     .catch((error) => {
       alert(error);
       dispatch(FAILED_UPDATE_MOVIE(movieId));
     });
 };
 // ...UPDATE MOVIE
+
+// CREATE MOVIE...
+export const REQUEST_CREATE_MOVIE = (movie) => ({
+  type: CREATE_MOVIE,
+  endpoint: '/movies',
+  method: 'POST',
+  payload: movie,
+});
+
+export const RESOLVED_CREATE_MOVIE = () => ({
+  type: CREATE_MOVIE + NETWORK_PROVIDER_RESOLUTION.RESOLVED,
+});
+
+export const FAILED_CREATE_MOVIE = () => ({
+  type: CREATE_MOVIE + NETWORK_PROVIDER_RESOLUTION.FAILED,
+});
+
+export const createMovie = (movie) => (dispatch) => {
+  const action = REQUEST_CREATE_MOVIE(movie);
+  dispatch(action);
+  return fetch(generateFullEndpoint(action.endpoint), {
+    ...config(action.method, action.payload),
+  })
+    .then((response) => {
+      if (response.ok) {
+        dispatch(RESOLVED_CREATE_MOVIE());
+        alert('Movie is successfully created');
+        dispatch(getMovies());
+      } else {
+        return response.json().then((json) => {
+          const errorText = `Can't create movie ${
+            movie.title
+          }:${json.messages.map((msg) => `\n- ${msg}`)}`;
+          return Promise.reject(errorText);
+        });
+      }
+    })
+    .catch((error) => {
+      alert(error);
+      dispatch(FAILED_CREATE_MOVIE());
+    });
+};
+// ...CREATE MOVIE

@@ -24,7 +24,7 @@ const FIELDS = [
     values: GENRES,
     key: 'genres',
   },
-  { label: 'Runtime', type: 'text', key: 'runtime' },
+  { label: 'Runtime', type: 'number', key: 'runtime' },
   { label: 'Overview', type: 'textarea', key: 'overview' },
 ];
 
@@ -51,7 +51,10 @@ const AddMovieModal = ({
     onAction(actionName, mutableMovie);
   };
 
-  const onInputChange = (fieldKey, newValue) => {
+  const onInputChange = (fieldKey, type, newValue) => {
+    if (type === 'number') {
+      newValue = Number(newValue);
+    }
     const newMutableMovie = { ...mutableMovie, [fieldKey]: newValue };
     setMutableMovie(newMutableMovie);
   };
@@ -85,7 +88,7 @@ const AddMovieModal = ({
             label={field.label}
             type={field.type}
             isEditable={!field.readOnly}
-            onChange={(e) => onInputChange(field.key, e.target.value)}
+            onChange={(e) => onInputChange(field.key, field.type, e.target.value)}
             value={mutableMovie[field.key]}
           />
         )))}
