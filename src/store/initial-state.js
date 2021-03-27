@@ -1,10 +1,12 @@
-export const INITIAL_STATE = {
+export const MOVIES_INITIAL_STATE = {
   movies: [],
   isLoading: false,
-  selectedMovie: null,
   updatingMovie: null,
-  options: {
-    limit: 21,
-    offset: 0,
-  },
+};
+
+export const SETTINGS_INITIAL_STATE = {
+  limit: 21,
+  offset: 0,
+  sortBy: 'release_date',
+  sortOrder: 'desc',
 };

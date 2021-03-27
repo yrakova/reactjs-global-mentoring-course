@@ -10,7 +10,7 @@ const MovieCard = ({ movie, optionsHandler }) => {
     title, release_date, poster_path, id,
   } = movie;
 
-  const year = new Date(release_date).getFullYear();
+  const year = release_date ? new Date(release_date).getFullYear() : 'N/A';
 
   const [showOptionsPopup, setShowOptionsPopup] = useState(false);
   const { setSelectedMovie } = useContext(MovieContext);

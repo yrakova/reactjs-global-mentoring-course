@@ -92,8 +92,16 @@ const GENRES = [
 ];
 
 const SORT_BY_VALUES = [
-  { id: 1, label: 'Release Date', value: 'year' },
-  { id: 2, label: 'Title', value: 'title' },
+  {
+    label: 'Release Date -- Asc',
+    value: 'release_date,asc',
+  },
+  {
+    label: 'Release Date -- Desc',
+    value: 'release_date,desc',
+  },
+  { label: 'Title -- Asc', value: 'title,asc' },
+  { label: 'Title -- Desc', value: 'title,desc' },
 ];
 
 export { mockMoviesData, GENRES, SORT_BY_VALUES };

@@ -1,13 +1,13 @@
-import { INITIAL_STATE } from '../initial-state';
+import { MOVIES_INITIAL_STATE } from '../initial-state';
 import {
   GET_MOVIES,
   NETWORK_PROVIDER_RESOLUTION,
   DELETE_MOVIE,
   UPDATE_MOVIE,
   CREATE_MOVIE,
-} from '../movies-action-types';
+} from '../actions/movies-action-types';
 
-export default (state = INITIAL_STATE, action) => {
+export default (state = MOVIES_INITIAL_STATE, action) => {
   switch (action.type) {
     case GET_MOVIES:
       return {

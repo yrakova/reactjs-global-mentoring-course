@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import styles from './AddMovieButton.module.scss';
 import AddMovieModal from '~/components/modals/AddMovieModal';
-import { createMovie } from '../../store/actions-creator';
+import { createMovie } from '../../store/actions/movies-actions';
 
 export const AddMovieButton = ({ requestCreateMovie }) => {
   const [showAddMovieForm, setShowAddMovieForm] = useState(false);

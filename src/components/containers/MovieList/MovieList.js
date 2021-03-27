@@ -4,7 +4,7 @@ import MovieCardErrorBoundary from '~/components/error-boundaries/MovieCardError
 import MovieCard from '~/components/MovieCard';
 import DeleteMovieModal from '../../modals/DeleteMovieModal';
 import AddMovieModal from '../../modals/AddMovieModal';
-import { getMovies, deleteMovie, updateMovie } from '../../../store/actions-creator';
+import { getMovies, deleteMovie, updateMovie } from '../../../store/actions/movies-actions';
 
 const getMovieById = (id, movies) => movies.find((movie) => movie.id === id);
 

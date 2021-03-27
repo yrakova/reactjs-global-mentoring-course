@@ -1,4 +1,10 @@
 .NavBar {
   display: flex;
   justify-content: space-between;
+  padding: 0 20px;
+
+  .FilterContainer {
+    display: flex;
+    flex-wrap: wrap;
+  }
 }
