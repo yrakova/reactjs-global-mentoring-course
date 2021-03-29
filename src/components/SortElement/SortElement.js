@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
 import styles from './SortElement.module.scss';
@@ -20,7 +20,7 @@ const SortElement = ({
     fetchMovies();
   };
 
-  const selectedValue = useMemo(() => `${sortBy},${sortOrder}`, [sortBy, sortOrder]);
+  const selectedValue = `${sortBy},${sortOrder}`;
 
   return (
     <div className={styles.SortElement}>

@@ -28,9 +28,9 @@ const FIELDS = [
   { label: 'Overview', type: 'textarea', key: 'overview' },
 ];
 
-const mapOptions = (options) => (options ? options.map((option) => ({ label: option, value: option })) : []);
+const getOptions = (options) => (options ? options.map((option) => ({ label: option, value: option })) : []);
 
-const GENRES_OPTIONS = mapOptions(GENRES.slice(0).sort(sortAbc));
+const GENRES_OPTIONS = getOptions(GENRES.slice(0).sort(sortAbc));
 
 const AddMovieModal = ({
   isEdit, movie, onAction, show,
@@ -80,7 +80,7 @@ const AddMovieModal = ({
             onChange={(newValues) => {
               onSelectInputChange(field.key, newValues);
             }}
-            value={mapOptions(mutableMovie[field.key])}
+            value={getOptions(mutableMovie[field.key])}
           />
         ) : (
           <FormField

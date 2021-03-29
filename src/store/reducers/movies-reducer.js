@@ -28,7 +28,7 @@ export default (state = MOVIES_INITIAL_STATE, action) => {
     case DELETE_MOVIE + NETWORK_PROVIDER_RESOLUTION.RESOLVED:
       return {
         ...state,
-        movies: state.movies.filter((i) => i.id !== action.payload),
+        movies: state.movies.filter((movie) => movie.id !== action.payload),
       };
     case UPDATE_MOVIE:
       return {

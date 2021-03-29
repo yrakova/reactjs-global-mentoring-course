@@ -10,33 +10,32 @@ const BASE_URL = 'http://localhost:4000';
 
 const generateFullEndpoint = (endpoint) => BASE_URL + endpoint;
 
-const headers = (method) => {
+const getHeaders = (method) => {
   const h = {
     'X-Requested-With': 'XMLHttpRequest',
   };
 
-  if (
-    method === 'POST'
-    || method === 'PUT'
-    || method === 'PATCH'
-    || method === 'DELETE'
-  ) {
+  if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
     h['Content-Type'] = 'application/json';
   }
   return h;
 };
 
-const config = (method = 'GET', payload) => ({
+const getConfig = (method = 'GET', payload) => ({
   method,
   body:
     payload
     && (typeof payload === 'string' ? payload : JSON.stringify(payload)),
-  headers: headers(method),
+  headers: getHeaders(method),
 });
 
 // GET MOVIES...
 export const REQUEST_MOVIES = ({
-  limit, offset, sortBy, sortOrder, filters,
+  limit,
+  offset,
+  sortBy,
+  sortOrder,
+  filters,
 }) => ({
   type: GET_MOVIES,
   endpoint: `/movies?limit=${limit}&offset=${offset}&sortBy=${sortBy}&sortOrder=${sortOrder}&filter=${filters.toString()}`,
@@ -50,14 +49,22 @@ export const RECEIVE_MOVIES = (movies) => ({
 
 export const getMovies = () => (dispatch, getState) => {
   const {
-    limit, offset, sortBy, sortOrder, filters,
+    limit,
+    offset,
+    sortBy,
+    sortOrder,
+    filters,
   } = getState().searchReducer;
   const action = REQUEST_MOVIES({
-    limit, offset, sortBy, sortOrder, filters,
+    limit,
+    offset,
+    sortBy,
+    sortOrder,
+    filters,
   });
   dispatch(action);
   return fetch(generateFullEndpoint(action.endpoint), {
-    ...config(action.method, action.payload),
+    ...getConfig(action.method, action.payload),
   })
     .then(
       (response) => response.json(),
@@ -91,7 +98,7 @@ export const deleteMovie = (movieId) => (dispatch) => {
   const action = REQUEST_DELETE_MOVIE(movieId);
   dispatch(action);
   return fetch(generateFullEndpoint(action.endpoint), {
-    ...config(action.method, action.payload),
+    ...getConfig(action.method, action.payload),
   })
     .then((response) => {
       if (response.ok) {
@@ -132,7 +139,7 @@ export const updateMovie = (movie) => (dispatch) => {
   const action = REQUEST_UPDATE_MOVIE(movie);
   dispatch(action);
   return fetch(generateFullEndpoint(action.endpoint), {
-    ...config(action.method, action.payload),
+    ...getConfig(action.method, action.payload),
   })
     .then((response) => {
       if (response.ok) {
@@ -140,9 +147,9 @@ export const updateMovie = (movie) => (dispatch) => {
         dispatch(RESOLVED_UPDATE_MOVIE(movieId));
       } else {
         return response.json().then((json) => {
-          const errorText = `Can't update movie ${
-            movie.id
-          }:${json.messages.map((msg) => `\n- ${msg}`)}`;
+          const errorText = `Can't update movie ${movie.id}:${json.messages.map(
+            (msg) => `\n- ${msg}`,
+          )}`;
           return Promise.reject(errorText);
         });
       }
@@ -175,7 +182,7 @@ export const createMovie = (movie) => (dispatch) => {
   const action = REQUEST_CREATE_MOVIE(movie);
   dispatch(action);
   return fetch(generateFullEndpoint(action.endpoint), {
-    ...config(action.method, action.payload),
+    ...getConfig(action.method, action.payload),
   })
     .then((response) => {
       if (response.ok) {
