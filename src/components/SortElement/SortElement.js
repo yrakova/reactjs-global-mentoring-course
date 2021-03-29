@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import styles from './SortElement.module.scss';
 import { SORT_BY_VALUES } from '~/services/mock-data';
 import { getMovies } from '../../store/actions/movies-actions';
-import { UI_SET_SORTING } from '../../store/actions/search-actions';
+import { actionUiSetSorting } from '../../store/actions/search-actions';
 
 const SortElement = ({
   sortBy: currentSortBy, sortOrder: currentSortOrder, fetchMovies, setSorting,
@@ -53,7 +53,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchMovies: () => dispatch(getMovies()),
-  setSorting: (sortBy, sortOrder) => dispatch(UI_SET_SORTING(sortBy, sortOrder)),
+  setSorting: (sortBy, sortOrder) => dispatch(actionUiSetSorting(sortBy, sortOrder)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SortElement);

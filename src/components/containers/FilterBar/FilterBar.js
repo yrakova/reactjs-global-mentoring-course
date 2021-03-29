@@ -4,8 +4,8 @@ import FilterItem from '~/components/FilterItem';
 import { GENRES } from '~/services/mock-data';
 import { getMovies } from '../../../store/actions/movies-actions';
 import {
-  UI_ADD_FILTER,
-  UI_REMOVE_FILTER,
+  actionUiAddFilter,
+  actionUiRemoveFilter,
 } from '../../../store/actions/search-actions';
 
 const FilterBar = ({
@@ -44,8 +44,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  addFilter: (filter) => dispatch(UI_ADD_FILTER(filter)),
-  removeFilter: (filter) => dispatch(UI_REMOVE_FILTER(filter)),
+  addFilter: (filter) => dispatch(actionUiAddFilter(filter)),
+  removeFilter: (filter) => dispatch(actionUiRemoveFilter(filter)),
   fetchMovies: () => dispatch(getMovies()),
 });
 

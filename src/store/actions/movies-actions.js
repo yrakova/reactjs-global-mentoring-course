@@ -30,7 +30,7 @@ const getConfig = (method = 'GET', payload) => ({
 });
 
 // GET MOVIES...
-export const REQUEST_MOVIES = ({
+const actionRequestMovies = ({
   limit,
   offset,
   sortBy,
@@ -42,7 +42,7 @@ export const REQUEST_MOVIES = ({
   method: 'GET',
 });
 
-export const RECEIVE_MOVIES = (movies) => ({
+const actionReceiveMovies = (movies) => ({
   type: GET_MOVIES + NETWORK_PROVIDER_RESOLUTION.RESOLVED,
   payload: movies,
 });
@@ -55,7 +55,7 @@ export const getMovies = () => (dispatch, getState) => {
     sortOrder,
     filters,
   } = getState().searchReducer;
-  const action = REQUEST_MOVIES({
+  const action = actionRequestMovies({
     limit,
     offset,
     sortBy,
@@ -72,71 +72,71 @@ export const getMovies = () => (dispatch, getState) => {
     )
     .then((json) => {
       const movies = json.data;
-      dispatch(RECEIVE_MOVIES(movies));
+      dispatch(actionReceiveMovies(movies));
     });
 };
 // ...GET MOVIES
 
 // DELETE MOVIE...
-export const REQUEST_DELETE_MOVIE = (movieId) => ({
+const actionRequestDeleteMovie = (movieId) => ({
   type: DELETE_MOVIE,
   endpoint: `/movies/${movieId}`,
   method: 'DELETE',
 });
 
-export const RESOLVED_DELETE_MOVIE = (movieId) => ({
+const actionResolvedDeleteMovie = (movieId) => ({
   type: DELETE_MOVIE + NETWORK_PROVIDER_RESOLUTION.RESOLVED,
   payload: movieId,
 });
 
-export const FAILED_DELETE_MOVIE = (movieId) => ({
+const actionFailedDeleteMovie = (movieId) => ({
   type: DELETE_MOVIE + NETWORK_PROVIDER_RESOLUTION.FAILED,
   payload: movieId,
 });
 
 export const deleteMovie = (movieId) => (dispatch) => {
-  const action = REQUEST_DELETE_MOVIE(movieId);
+  const action = actionRequestDeleteMovie(movieId);
   dispatch(action);
   return fetch(generateFullEndpoint(action.endpoint), {
     ...getConfig(action.method, action.payload),
   })
     .then((response) => {
       if (response.ok) {
-        dispatch(RESOLVED_DELETE_MOVIE(movieId));
+        dispatch(actionResolvedDeleteMovie(movieId));
         dispatch(getMovies());
       } else {
         alert(`Can't delete movie with id ${movieId}`);
-        dispatch(FAILED_DELETE_MOVIE(movieId));
+        dispatch(actionFailedDeleteMovie(movieId));
       }
     })
     .catch((error) => {
       alert(error);
-      dispatch(FAILED_DELETE_MOVIE(movieId));
+      dispatch(actionFailedDeleteMovie(movieId));
     });
 };
 // ...DELETE MOVIE
 
 // UPDATE MOVIE...
-export const REQUEST_UPDATE_MOVIE = (movie) => ({
+const actionRequestUpdateMovie = (movie) => ({
   type: UPDATE_MOVIE,
   endpoint: '/movies',
   method: 'PUT',
   payload: movie,
 });
 
-export const RESOLVED_UPDATE_MOVIE = (movieId) => ({
+const actionResolvedUpdateMovie = (movieId) => ({
   type: UPDATE_MOVIE + NETWORK_PROVIDER_RESOLUTION.RESOLVED,
   payload: movieId,
 });
 
-export const FAILED_UPDATE_MOVIE = (movieId) => ({
+const actionFailedUpdateMovie = (movieId) => ({
   type: UPDATE_MOVIE + NETWORK_PROVIDER_RESOLUTION.FAILED,
   payload: movieId,
 });
 
 export const updateMovie = (movie) => (dispatch) => {
   const { id: movieId } = movie;
-  const action = REQUEST_UPDATE_MOVIE(movie);
+  const action = actionRequestUpdateMovie(movie);
   dispatch(action);
   return fetch(generateFullEndpoint(action.endpoint), {
     ...getConfig(action.method, action.payload),
@@ -144,7 +144,7 @@ export const updateMovie = (movie) => (dispatch) => {
     .then((response) => {
       if (response.ok) {
         alert('Movie is successfully updated');
-        dispatch(RESOLVED_UPDATE_MOVIE(movieId));
+        dispatch(actionResolvedUpdateMovie(movieId));
       } else {
         return response.json().then((json) => {
           const errorText = `Can't update movie ${movie.id}:${json.messages.map(
@@ -156,37 +156,37 @@ export const updateMovie = (movie) => (dispatch) => {
     })
     .catch((error) => {
       alert(error);
-      dispatch(FAILED_UPDATE_MOVIE(movieId));
+      dispatch(actionFailedUpdateMovie(movieId));
       return Promise.reject(error);
     });
 };
 // ...UPDATE MOVIE
 
 // CREATE MOVIE...
-export const REQUEST_CREATE_MOVIE = (movie) => ({
+const actionRequestCreateMovie = (movie) => ({
   type: CREATE_MOVIE,
   endpoint: '/movies',
   method: 'POST',
   payload: movie,
 });
 
-export const RESOLVED_CREATE_MOVIE = () => ({
+const actionResolvedCreateMovie = () => ({
   type: CREATE_MOVIE + NETWORK_PROVIDER_RESOLUTION.RESOLVED,
 });
 
-export const FAILED_CREATE_MOVIE = () => ({
+const actionFailedCreateMovie = () => ({
   type: CREATE_MOVIE + NETWORK_PROVIDER_RESOLUTION.FAILED,
 });
 
 export const createMovie = (movie) => (dispatch) => {
-  const action = REQUEST_CREATE_MOVIE(movie);
+  const action = actionRequestCreateMovie(movie);
   dispatch(action);
   return fetch(generateFullEndpoint(action.endpoint), {
     ...getConfig(action.method, action.payload),
   })
     .then((response) => {
       if (response.ok) {
-        dispatch(RESOLVED_CREATE_MOVIE());
+        dispatch(actionResolvedCreateMovie());
         alert('Movie is successfully created');
         dispatch(getMovies());
       } else {
@@ -200,7 +200,7 @@ export const createMovie = (movie) => (dispatch) => {
     })
     .catch((error) => {
       alert(error);
-      dispatch(FAILED_CREATE_MOVIE());
+      dispatch(actionFailedCreateMovie());
       return Promise.reject(error);
     });
 };
