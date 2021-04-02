@@ -5,7 +5,9 @@ import SortElement from '../SortElement/SortElement';
 
 const NavBar = () => (
   <div className={styles.NavBar}>
-    <FilterBar />
+    <div className={styles.FilterContainer}>
+      <FilterBar />
+    </div>
     <SortElement />
   </div>
 );

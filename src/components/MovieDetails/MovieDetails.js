@@ -5,10 +5,10 @@ import zoomIcon from '~/assets/images/magnifying_glass.svg';
 import { MoviePropTypes } from '~/utils/CommonPropTypes';
 
 const calcRatingStyle = (rating) => {
-  if (rating >= 4.8) {
+  if (rating >= 8) {
     return styles.rating__high;
   }
-  if (rating >= 4.5) {
+  if (rating >= 5) {
     return styles.rating__medium;
   }
   return styles.rating__low;
@@ -16,15 +16,17 @@ const calcRatingStyle = (rating) => {
 
 const MovieDetails = ({ movie, onBack }) => {
   const {
-    posterUri, title, description, year, runtime, rating,
+    poster_path, title, overview: description, release_date, runtime, vote_average: rating,
   } = movie;
+
+  const year = new Date(release_date).getFullYear();
 
   const ratingStyle = useCallback(calcRatingStyle(rating), [rating]);
 
   return (
     <div className={styles.MovieDetails}>
       <div className={styles.imgContainer}>
-        <img className={styles.poster} src={posterUri} />
+        <img className={styles.poster} src={poster_path} />
       </div>
       <div className={styles.infoContainer}>
         <div className={styles.row}>
@@ -38,9 +40,7 @@ const MovieDetails = ({ movie, onBack }) => {
         <div className={styles.row}>
           <p className={styles.year}>{year}</p>
           <p className={styles.runtime}>
-            {runtime}
-            {' '}
-            min
+            {runtime && `${runtime} min`}
           </p>
         </div>
         <p className={styles.description}>{description}</p>

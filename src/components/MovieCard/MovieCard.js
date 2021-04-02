@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './MovieCard.module.scss';
 import MovieOptionsPopup from '../MovieOptionsPopup/MovieOptionsPopup';
@@ -7,11 +7,19 @@ import { MoviePropTypes } from '~/utils/CommonPropTypes';
 
 const MovieCard = ({ movie, optionsHandler }) => {
   const {
-    title, year, posterUri, id,
+    title, release_date, poster_path, id, genres,
   } = movie;
 
+  const year = release_date ? new Date(release_date).getFullYear() : 'N/A';
+
   const [showOptionsPopup, setShowOptionsPopup] = useState(false);
-  const { setSelectedMovie } = useContext(MovieContext);
+  const { selectedMovie, setSelectedMovie } = useContext(MovieContext);
+
+  useEffect(() => {
+    if (selectedMovie && selectedMovie.id === movie.id) {
+      setSelectedMovie(movie);
+    }
+  }, [movie]);
 
   const hideOptionsPopup = () => {
     setShowOptionsPopup(false);
@@ -32,7 +40,7 @@ const MovieCard = ({ movie, optionsHandler }) => {
     <>
       <div className={styles.MovieCard} onClick={() => setSelectedMovie(movie)} role="button">
         <div className={styles.imgContainer}>
-          <img src={posterUri} />
+          <img src={poster_path} />
           <button
             className={styles.btnOptions}
             onClick={toggleOptionsPopup}
@@ -43,6 +51,9 @@ const MovieCard = ({ movie, optionsHandler }) => {
         <div className={styles.descriptionContainer}>
           <p className={styles.title}>{title}</p>
           <p className={styles.year}>{year}</p>
+        </div>
+        <div className={styles.genresContainer}>
+          {genres && genres.join(', ')}
         </div>
         <div className={styles.optionsContainer}>
           <MovieOptionsPopup

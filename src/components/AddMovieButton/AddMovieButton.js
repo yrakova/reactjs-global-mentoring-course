@@ -1,12 +1,24 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import styles from './AddMovieButton.module.scss';
 import AddMovieModal from '~/components/modals/AddMovieModal';
+import { createMovie } from '../../store/actions/movies-actions';
 
-export const AddMovieButton = () => {
+export const AddMovieButton = ({ requestCreateMovie }) => {
   const [showAddMovieForm, setShowAddMovieForm] = useState(false);
 
-  const onAddMovieAction = () => {
-    setShowAddMovieForm(false);
+  const onAddMovieAction = (formAction, mutableMovie) => {
+    // setShowAddMovieForm(false);
+    switch (formAction) {
+      case 'close':
+        setShowAddMovieForm(false);
+        break;
+      case 'create':
+        requestCreateMovie(mutableMovie).then(() => setShowAddMovieForm(false));
+        break;
+      default:
+        throw new Error(`Unsupported action ${formAction} for Add Movie form`);
+    }
   };
 
   const openAddMovieForm = () => {
@@ -30,4 +42,8 @@ AddMovieButton.propTypes = {};
 
 AddMovieButton.defaultProps = {};
 
-export default AddMovieButton;
+const mapDispatchToProps = (dispatch) => ({
+  requestCreateMovie: (movie) => dispatch(createMovie(movie)),
+});
+
+export default connect(null, mapDispatchToProps)(AddMovieButton);

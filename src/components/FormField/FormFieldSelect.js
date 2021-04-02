@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import Select from 'react-select';
 import styles from './FormField.module.scss';
 
-const FormFieldSelect = ({ label, options, onChange }) => (
+const FormFieldSelect = ({
+  label, options, onChange, value,
+}) => (
   <div className={styles.FormField}>
     <label>{label}</label>
     <Select
@@ -11,6 +13,7 @@ const FormFieldSelect = ({ label, options, onChange }) => (
       options={options}
       isMulti
       onChange={onChange}
+      value={value}
     />
   </div>
 );

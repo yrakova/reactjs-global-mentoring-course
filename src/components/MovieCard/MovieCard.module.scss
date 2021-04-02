@@ -1,7 +1,7 @@
 @import '~/assets/styles/variables.scss';
 
 .MovieCard {
-  height: 500px;
+  height: 540px;
   width: 300px;
 
   border: 2px solid $color-light-grey;
@@ -47,8 +47,22 @@
     justify-content: space-between;
   }
 
+  .genresContainer {
+    display: flex;
+    justify-content: left;
+    text-align: left;
+    flex-wrap: nowrap;
+    overflow-x: hidden;
+    font-size: 0.9em;
+    margin-top: -20px;
+    align-items: center;
+  }
+
   .title {
     font-size: 1.2em;
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
   }
 
   .year {

@@ -6,4 +6,16 @@
   font-size: 1.1em;
   outline: none;
   text-transform: capitalize;
+  margin: 2px;
+}
+
+.selectedItem {
+  color: $color-pink;
+  &:hover {
+    color: $color-pink;
+  }
+}
+
+.selectedItem::before {
+  content: ' ✓'
 }

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './FormField.module.scss';
+import { isNullable } from '~/utils/check-value';
 
 const FormField = ({
   label,
@@ -10,31 +11,20 @@ const FormField = ({
   value,
   placeholder,
 }) => {
-  const [inputValue, setInputValue] = useState(value);
-
-  const onInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
-
   const inputProps = {
     readOnly: !isEditable,
-    onChange: isEditable ? onInputChange : null,
+    onChange: isEditable ? onChange : null,
     placeholder,
-    value: inputValue,
+    value: isNullable(value) ? '' : value,
   };
   return (
     <div className={styles.FormField}>
       <label>{label}</label>
 
       {type === 'textarea' ? (
-        <textarea
-          {...inputProps}
-        />
+        <textarea {...inputProps} />
       ) : (
-        <input
-          type={type}
-          {...inputProps}
-        />
+        <input type={type} {...inputProps} />
       )}
     </div>
   );
@@ -45,7 +35,7 @@ FormField.propTypes = {
   type: PropTypes.string,
   onChange: PropTypes.func,
   isEditable: PropTypes.bool,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   placeholder: PropTypes.string,
 };
 

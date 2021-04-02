@@ -1,4 +1,4 @@
-import React, { StrictMode, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './components/Header';
 import MovieTable from './components/MovieTable';
 import Footer from './components/Footer';
@@ -18,19 +18,20 @@ export const App = () => {
   }, [selectedMovie]);
 
   return (
-    <StrictMode>
-      <div className={styles.mainContainer}>
-        <div className={`${styles.headerContainer} ${styles.container}`}>
-          <Header selectedMovie={selectedMovie} onCloseMovieDetails={resetSelectedMovie} />
-        </div>
-        <div className={styles.container}>
-          <NavBar />
-          <MovieContext.Provider value={{ selectedMovie, setSelectedMovie }}>
-            <MovieTable />
-          </MovieContext.Provider>
-          <Footer />
-        </div>
+    <div className={styles.mainContainer}>
+      <div className={`${styles.headerContainer} ${styles.container}`}>
+        <Header
+          selectedMovie={selectedMovie}
+          onCloseMovieDetails={resetSelectedMovie}
+        />
       </div>
-    </StrictMode>
+      <div className={styles.container}>
+        <NavBar />
+        <MovieContext.Provider value={{ selectedMovie, setSelectedMovie }}>
+          <MovieTable />
+        </MovieContext.Provider>
+        <Footer />
+      </div>
+    </div>
   );
 };
