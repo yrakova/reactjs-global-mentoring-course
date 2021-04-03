@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Formik, Form } from 'formik';
 import styles from './AddMovieModal.module.scss';
 import ModalBase from '../ModalBase/ModalBase';
 import { GENRES } from '~/services/mock-data';
@@ -32,72 +34,65 @@ const getOptions = (options) => (options ? options.map((option) => ({ label: opt
 
 const GENRES_OPTIONS = getOptions(GENRES.slice(0).sort(sortAbc));
 
+const MOVIE_TEMPLATE = {
+  title: '',
+  overview: '',
+  release_date: '',
+  poster_path: '',
+  runtime: '',
+  genres: [],
+};
+
 const AddMovieModal = ({
-  isEdit, movie, onAction, show,
+  isEdit, movie, onAction, show, isSubmitting,
 }) => {
-  const [mutableMovie, setMutableMovie] = useState({ ...movie });
-
-  useEffect(() => {
-    setMutableMovie({ ...movie });
-    return () => setMutableMovie({});
-  }, [show]);
-
-  const onReset = () => {
-    setMutableMovie({ ...movie });
-  };
-
-  const onSaveOrSubmit = () => {
-    const actionName = isEdit ? 'update' : 'create';
-    onAction(actionName, mutableMovie);
-  };
-
-  const onInputChange = (fieldKey, type, newValue) => {
-    if (type === 'number') {
-      newValue = Number(newValue);
-    }
-    const newMutableMovie = { ...mutableMovie, [fieldKey]: newValue };
-    setMutableMovie(newMutableMovie);
-  };
-
-  const onSelectInputChange = (fieldKey, newValues) => {
-    if (newValues) {
-      const newMutableMovie = { ...mutableMovie, [fieldKey]: newValues.map(({ value }) => value) };
-      setMutableMovie(newMutableMovie);
-    }
-  };
+  const actionName = isEdit ? 'update' : 'create';
 
   return show ? (
     <ModalBase
       title={isEdit ? 'Edit Movie' : 'Add Movie'}
       onClose={() => onAction('close')}
     >
-      <div className={styles.AddMovieModal}>
-        {FIELDS.filter((field) => !field.readOnly || isEdit).map((field) => (field.type === 'select' ? (
-          <FormFieldSelect
-            key={field.label}
-            label={field.label}
-            options={GENRES_OPTIONS}
-            onChange={(newValues) => {
-              onSelectInputChange(field.key, newValues);
-            }}
-            value={getOptions(mutableMovie[field.key])}
-          />
-        ) : (
-          <FormField
-            key={field.label}
-            label={field.label}
-            type={field.type}
-            isEditable={!field.readOnly}
-            onChange={(e) => onInputChange(field.key, field.type, e.target.value)}
-            value={mutableMovie[field.key]}
-          />
-        )))}
+      <Formik
+        initialValues={{ ...MOVIE_TEMPLATE, ...movie }}
+        onSubmit={(values) => {
+          onAction(actionName, { ...values });
+        }}
+      >
+        {(resetForm) => (
+          <Form>
+            <div className={styles.AddMovieModal}>
+              {FIELDS.filter(
+                (field) => !field.readOnly || isEdit,
+              ).map((field) => (field.type === 'select' ? (
+                <FormFieldSelect
+                  key={field.label}
+                  label={field.label}
+                  name={field.key}
+                  options={GENRES_OPTIONS}
+                />
+              ) : (
+                <FormField
+                  key={field.label}
+                  label={field.label}
+                  name={field.key}
+                  type={field.type}
+                  isEditable={!field.readOnly}
+                />
+              )))}
 
-        <div className={styles.buttonsContainer}>
-          <button onClick={onReset}>RESET</button>
-          <button onClick={onSaveOrSubmit}>{isEdit ? 'SAVE' : 'SUBMIT'}</button>
-        </div>
-      </div>
+              <div className={styles.buttonsContainer}>
+                <button type="reset" disabled={isSubmitting}>
+                  RESET
+                </button>
+                <button type="submit" disabled={isSubmitting}>
+                  {isEdit ? 'SAVE' : 'SUBMIT'}
+                </button>
+              </div>
+            </div>
+          </Form>
+        )}
+      </Formik>
     </ModalBase>
   ) : null;
 };
@@ -116,4 +111,8 @@ AddMovieModal.defaultProps = {
   show: false,
 };
 
-export default AddMovieModal;
+const mapStateToProps = (state) => ({
+  isSubmitting: state.moviesReducer.isSubmitting,
+});
+
+export default connect(mapStateToProps)(AddMovieModal);

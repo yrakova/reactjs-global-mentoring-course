@@ -1,49 +1,50 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useField } from 'formik';
 import styles from './FormField.module.scss';
-import { isNullable } from '~/utils/check-value';
+import FormFieldErrorBoundary from '../error-boundaries/FormFieldErrorBoundary';
 
 const FormField = ({
   label,
-  type,
   isEditable,
-  onChange,
-  value,
-  placeholder,
+  name,
+  type,
 }) => {
+  const [field] = useField(name);
+
   const inputProps = {
     readOnly: !isEditable,
-    onChange: isEditable ? onChange : null,
-    placeholder,
-    value: isNullable(value) ? '' : value,
+    label,
+    name,
+    type,
   };
-  return (
-    <div className={styles.FormField}>
-      <label>{label}</label>
 
-      {type === 'textarea' ? (
-        <textarea {...inputProps} />
-      ) : (
-        <input type={type} {...inputProps} />
-      )}
-    </div>
+  return (
+    <FormFieldErrorBoundary>
+      <div className={styles.FormField}>
+        <label htmlFor={name}>{label}</label>
+
+        {type === 'textarea' ? (
+          <textarea {...inputProps} {...field} />
+        ) : (
+          <input type={type} {...inputProps} {...field} />
+        )}
+      </div>
+    </FormFieldErrorBoundary>
   );
 };
 
 FormField.propTypes = {
   label: PropTypes.string.isRequired,
   type: PropTypes.string,
-  onChange: PropTypes.func,
   isEditable: PropTypes.bool,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   placeholder: PropTypes.string,
+  name: PropTypes.string.isRequired,
 };
 
 FormField.defaultProps = {
   type: 'text',
-  onChange: () => {},
   isEditable: true,
-  value: '',
   placeholder: '',
 };
 

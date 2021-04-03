@@ -14,8 +14,10 @@
   input {
     width: 100%;
     font-size: 1.2em;
+    border-style: solid;
     background-color: $color-grey;
     color: $color-white;
+    border-radius: 4px;
 
     &:read-only {
       border: none;
@@ -32,11 +34,11 @@
     min-height: 40px;
     resize: vertical;
     color: $color-white;
-  }  
+    border-style: solid;
+    border-radius: 4px;
+  }
 
   .selectWrapper {
-    color: $color-dark-grey;    
+    color: $color-dark-grey;
   }
 }
-
-
