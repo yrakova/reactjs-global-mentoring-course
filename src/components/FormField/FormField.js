@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useField } from 'formik';
 import styles from './FormField.module.scss';
+import mainStyles from '~/assets/styles/main';
 import FormFieldErrorBoundary from '../error-boundaries/FormFieldErrorBoundary';
 
 const FormField = ({
@@ -10,7 +11,7 @@ const FormField = ({
   name,
   type,
 }) => {
-  const [field] = useField(name);
+  const [field, meta] = useField(name);
 
   const inputProps = {
     readOnly: !isEditable,
@@ -19,16 +20,22 @@ const FormField = ({
     type,
   };
 
+  const isInvalid = meta.error && meta.touched;
+  const fieldClassName = isInvalid ? mainStyles.fieldInvalid : '';
+
   return (
     <FormFieldErrorBoundary>
       <div className={styles.FormField}>
         <label htmlFor={name}>{label}</label>
 
         {type === 'textarea' ? (
-          <textarea {...inputProps} {...field} />
+          <textarea {...inputProps} {...field} className={fieldClassName} />
         ) : (
-          <input type={type} {...inputProps} {...field} />
+          <input type={type} {...inputProps} {...field} className={fieldClassName} />
         )}
+        <div className={mainStyles.errorContainer}>
+          {isInvalid && <span className={mainStyles.error}>{meta.error}</span>}
+        </div>
       </div>
     </FormFieldErrorBoundary>
   );

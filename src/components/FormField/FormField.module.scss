@@ -18,6 +18,7 @@
     background-color: $color-grey;
     color: $color-white;
     border-radius: 4px;
+    box-shadow: none;
 
     &:read-only {
       border: none;
@@ -40,5 +41,5 @@
 
   .selectWrapper {
     color: $color-dark-grey;
-  }
+  }  
 }

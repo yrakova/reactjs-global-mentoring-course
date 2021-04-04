@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Formik, Form } from 'formik';
+import { Formik, Form, yupToFormErrors } from 'formik';
+import * as Yup from 'yup';
 import styles from './AddMovieModal.module.scss';
 import ModalBase from '../ModalBase/ModalBase';
 import { GENRES } from '~/services/mock-data';
@@ -34,7 +35,18 @@ const getOptions = (options) => (options ? options.map((option) => ({ label: opt
 
 const GENRES_OPTIONS = getOptions(GENRES.slice(0).sort(sortAbc));
 
-const MOVIE_TEMPLATE = {
+const validationSchema = Yup.object({
+  title: Yup.string().required().label('Title'),
+  release_date: Yup.date().label('Release Date'),
+  poster_path: Yup.string().url().required().label('Poster Url'),
+  genres: Yup.array().of(Yup.string().oneOf(GENRES)).min(1).required()
+    .label('Genres'),
+  runtime: Yup.number().required().positive().integer()
+    .label('Runtime'),
+  overview: Yup.string().required().label('Overview'),
+});
+
+const MOVIE_DEFAULTS = {
   title: '',
   overview: '',
   release_date: '',
@@ -54,10 +66,11 @@ const AddMovieModal = ({
       onClose={() => onAction('close')}
     >
       <Formik
-        initialValues={{ ...MOVIE_TEMPLATE, ...movie }}
+        initialValues={{ ...MOVIE_DEFAULTS, ...movie }}
         onSubmit={(values) => {
           onAction(actionName, { ...values });
         }}
+        validationSchema={validationSchema}
       >
         {(resetForm) => (
           <Form>
