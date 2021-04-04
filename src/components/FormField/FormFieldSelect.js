@@ -17,7 +17,7 @@ const FormFieldSelect = ({
   const { setValue, setTouched } = helpers;
 
   const onSelectChange = (newValues) => {
-    setValue(newValues.map(({ value }) => value));
+    setValue(newValues && newValues.length > 0 ? newValues.map(({ value }) => value) : null);
   };
 
   const isInvalid = meta.touched && meta.error;

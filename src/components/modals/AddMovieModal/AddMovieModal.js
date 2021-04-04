@@ -10,7 +10,7 @@ import FormField from '../../FormField/FormField';
 import FormFieldSelect from '../../FormField/FormFieldSelect';
 import { MoviePropTypes } from '~/utils/CommonPropTypes';
 import { sortAbc } from '~/utils/sorting';
-import { isNullable } from '~/utils/check-value';
+import { isNullableOrEmpty } from '~/utils/check-value';
 
 const FIELDS = [
   {
@@ -31,14 +31,15 @@ const FIELDS = [
     type: 'date',
     key: 'release_date',
     placeholder: 'Select Date',
-    validationSchema: Yup.date().required().label('Release Date'),
+    validationSchema: Yup.date().nullable().label('Release Date'),
   },
   {
     label: 'Poster Url',
     type: 'text',
     key: 'poster_path',
     placeholder: 'Poster URL here',
-    validationSchema: Yup.string().url().required().label('Poster Url'),
+    validationSchema: Yup.string().url().required()
+      .label('Poster Url'),
   },
   {
     label: 'Genre',
@@ -49,7 +50,7 @@ const FIELDS = [
     validationSchema: Yup.array()
       .of(Yup.string().oneOf(GENRES))
       .min(1)
-      .required()
+      .nullable()
       .label('Genres'),
   },
   {
@@ -91,7 +92,16 @@ const MOVIE_DEFAULTS = {
   release_date: '',
   poster_path: '',
   runtime: '',
-  genres: [],
+  genres: null,
+};
+
+const normalizeValues = (values) => {
+  Object.keys(values).forEach((key) => {
+    if (isNullableOrEmpty(values[key])) {
+      delete values[key];
+    }
+  });
+  return values;
 };
 
 const AddMovieModal = ({
@@ -99,22 +109,15 @@ const AddMovieModal = ({
 }) => {
   const actionName = isEdit ? 'update' : 'create';
 
-  const validMovieFields = movie
-    ? Object.keys(movie).map((keyName) => ({
-      [keyName]: isNullable(movie[keyName]) ? '' : movie[keyName],
-    }))
-    : [{}];
-  const validMovie = Object.assign({}, ...validMovieFields);
-
   return show ? (
     <ModalBase
       title={isEdit ? 'Edit Movie' : 'Add Movie'}
       onClose={() => onAction('close')}
     >
       <Formik
-        initialValues={{ ...MOVIE_DEFAULTS, ...validMovie }}
+        initialValues={{ ...MOVIE_DEFAULTS, ...normalizeValues({ ...movie }) }}
         onSubmit={(values) => {
-          onAction(actionName, { ...values });
+          onAction(actionName, normalizeValues({ ...values }));
         }}
         validationSchema={commonValidationSchema}
       >
