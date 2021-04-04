@@ -10,6 +10,7 @@ import FormField from '../../FormField/FormField';
 import FormFieldSelect from '../../FormField/FormFieldSelect';
 import { MoviePropTypes } from '~/utils/CommonPropTypes';
 import { sortAbc } from '~/utils/sorting';
+import { isNullable } from '~/utils/check-value';
 
 const FIELDS = [
   {
@@ -98,13 +99,20 @@ const AddMovieModal = ({
 }) => {
   const actionName = isEdit ? 'update' : 'create';
 
+  const validMovieFields = movie
+    ? Object.keys(movie).map((keyName) => ({
+      [keyName]: isNullable(movie[keyName]) ? '' : movie[keyName],
+    }))
+    : [{}];
+  const validMovie = Object.assign({}, ...validMovieFields);
+
   return show ? (
     <ModalBase
       title={isEdit ? 'Edit Movie' : 'Add Movie'}
       onClose={() => onAction('close')}
     >
       <Formik
-        initialValues={{ ...MOVIE_DEFAULTS, ...movie }}
+        initialValues={{ ...MOVIE_DEFAULTS, ...validMovie }}
         onSubmit={(values) => {
           onAction(actionName, { ...values });
         }}
