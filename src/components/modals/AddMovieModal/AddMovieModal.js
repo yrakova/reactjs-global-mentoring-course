@@ -31,7 +31,7 @@ const FIELDS = [
     type: 'date',
     key: 'release_date',
     placeholder: 'Select Date',
-    validationSchema: Yup.date().label('Release Date'),
+    validationSchema: Yup.date().required().label('Release Date'),
   },
   {
     label: 'Poster Url',
