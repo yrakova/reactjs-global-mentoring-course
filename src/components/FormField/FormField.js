@@ -36,7 +36,7 @@ const FormField = ({
           <input type={type} {...inputProps} {...field} className={fieldClassName} />
         )}
         <div className={mainStyles.errorContainer}>
-          {isInvalid && <span className={mainStyles.error}>{meta.error}</span>}
+          {isInvalid && <p className={mainStyles.error}>{meta.error}</p>}
         </div>
       </div>
     </FormFieldErrorBoundary>
