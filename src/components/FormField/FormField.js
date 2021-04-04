@@ -10,6 +10,7 @@ const FormField = ({
   isEditable,
   name,
   type,
+  placeholder,
 }) => {
   const [field, meta] = useField(name);
 
@@ -18,6 +19,7 @@ const FormField = ({
     label,
     name,
     type,
+    placeholder,
   };
 
   const isInvalid = meta.error && meta.touched;

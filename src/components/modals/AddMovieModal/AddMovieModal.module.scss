@@ -8,8 +8,8 @@
   button {
     margin: 5px;
     &[disabled] {
-      background-color: black;
-      cursor: wait;
+      background-color: black;      
+      cursor: default;
     }
   }
 }

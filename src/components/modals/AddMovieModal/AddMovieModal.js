@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Formik, Form, yupToFormErrors } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import styles from './AddMovieModal.module.scss';
 import ModalBase from '../ModalBase/ModalBase';
@@ -18,33 +18,71 @@ const FIELDS = [
     readOnly: true,
     key: 'id',
   },
-  { label: 'Title', type: 'text', key: 'title' },
-  { label: 'Release Date', type: 'date', key: 'release_date' },
-  { label: 'Poster Url', type: 'text', key: 'poster_path' },
+  {
+    label: 'Title',
+    type: 'text',
+    key: 'title',
+    placeholder: 'Input title',
+    validationSchema: Yup.string().required().label('Title'),
+  },
+  {
+    label: 'Release Date',
+    type: 'date',
+    key: 'release_date',
+    placeholder: 'Select Date',
+    validationSchema: Yup.date().label('Release Date'),
+  },
+  {
+    label: 'Poster Url',
+    type: 'text',
+    key: 'poster_path',
+    placeholder: 'Poster URL here',
+    validationSchema: Yup.string().url().required().label('Poster Url'),
+  },
   {
     label: 'Genre',
     type: 'select',
     values: GENRES,
     key: 'genres',
+    placeholder: 'Select Genre(s)',
+    validationSchema: Yup.array()
+      .of(Yup.string().oneOf(GENRES))
+      .min(1)
+      .required()
+      .label('Genres'),
   },
-  { label: 'Runtime', type: 'number', key: 'runtime' },
-  { label: 'Overview', type: 'textarea', key: 'overview' },
+  {
+    label: 'Runtime',
+    type: 'number',
+    key: 'runtime',
+    placeholder: 'Runtime here',
+    validationSchema: Yup.number()
+      .required()
+      .positive()
+      .integer()
+      .label('Runtime'),
+  },
+  {
+    label: 'Overview',
+    type: 'textarea',
+    key: 'overview',
+    placeholder: 'Overview here',
+    validationSchema: Yup.string().required().label('Overview'),
+  },
 ];
 
 const getOptions = (options) => (options ? options.map((option) => ({ label: option, value: option })) : []);
 
 const GENRES_OPTIONS = getOptions(GENRES.slice(0).sort(sortAbc));
 
-const validationSchema = Yup.object({
-  title: Yup.string().required().label('Title'),
-  release_date: Yup.date().label('Release Date'),
-  poster_path: Yup.string().url().required().label('Poster Url'),
-  genres: Yup.array().of(Yup.string().oneOf(GENRES)).min(1).required()
-    .label('Genres'),
-  runtime: Yup.number().required().positive().integer()
-    .label('Runtime'),
-  overview: Yup.string().required().label('Overview'),
-});
+const validationSchemas = Object.assign(
+  {},
+  ...FIELDS.filter((field) => field.validationSchema).map((field) => ({
+    [field.key]: field.validationSchema,
+  })),
+);
+
+const commonValidationSchema = Yup.object(validationSchemas);
 
 const MOVIE_DEFAULTS = {
   title: '',
@@ -70,41 +108,46 @@ const AddMovieModal = ({
         onSubmit={(values) => {
           onAction(actionName, { ...values });
         }}
-        validationSchema={validationSchema}
+        validationSchema={commonValidationSchema}
       >
-        {(resetForm) => (
-          <Form>
-            <div className={styles.AddMovieModal}>
-              {FIELDS.filter(
-                (field) => !field.readOnly || isEdit,
-              ).map((field) => (field.type === 'select' ? (
-                <FormFieldSelect
-                  key={field.label}
-                  label={field.label}
-                  name={field.key}
-                  options={GENRES_OPTIONS}
-                />
-              ) : (
-                <FormField
-                  key={field.label}
-                  label={field.label}
-                  name={field.key}
-                  type={field.type}
-                  isEditable={!field.readOnly}
-                />
-              )))}
+        {({ dirty }) => {
+          const buttonsDisabled = isSubmitting || !dirty;
+          return (
+            <Form>
+              <div className={styles.AddMovieModal}>
+                {FIELDS.filter(
+                  (field) => !field.readOnly || isEdit,
+                ).map((field) => (field.type === 'select' ? (
+                  <FormFieldSelect
+                    key={field.label}
+                    label={field.label}
+                    name={field.key}
+                    placeholder={field.placeholder}
+                    options={GENRES_OPTIONS}
+                  />
+                ) : (
+                  <FormField
+                    key={field.label}
+                    label={field.label}
+                    name={field.key}
+                    type={field.type}
+                    placeholder={field.placeholder}
+                    isEditable={!field.readOnly}
+                  />
+                )))}
 
-              <div className={styles.buttonsContainer}>
-                <button type="reset" disabled={isSubmitting}>
-                  RESET
-                </button>
-                <button type="submit" disabled={isSubmitting}>
-                  {isEdit ? 'SAVE' : 'SUBMIT'}
-                </button>
+                <div className={styles.buttonsContainer}>
+                  <button type="reset" disabled={buttonsDisabled}>
+                    RESET
+                  </button>
+                  <button type="submit" disabled={buttonsDisabled}>
+                    {isEdit ? 'SAVE' : 'SUBMIT'}
+                  </button>
+                </div>
               </div>
-            </div>
-          </Form>
-        )}
+            </Form>
+          );
+        }}
       </Formik>
     </ModalBase>
   ) : null;

@@ -9,7 +9,9 @@ import variables from '~/assets/styles/variables';
 
 const mapValues = (values) => (values ? values.map((val) => ({ label: val, value: val })) : []);
 
-const FormFieldSelect = ({ label, options, name }) => {
+const FormFieldSelect = ({
+  label, options, name, placeholder,
+}) => {
   const [, meta, helpers] = useField(name);
   const { value: selectedValues } = meta;
   const { setValue, setTouched } = helpers;
@@ -45,6 +47,7 @@ const FormFieldSelect = ({ label, options, name }) => {
           onChange={onSelectChange}
           value={mapValues(selectedValues)}
           onBlur={setTouched}
+          placeholder={placeholder}
         />
         <div className={mainStyles.errorContainer}>
           {isInvalid && <span className={mainStyles.error}>{meta.error}</span>}
