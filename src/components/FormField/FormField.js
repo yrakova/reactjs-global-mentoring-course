@@ -18,7 +18,6 @@ const FormField = ({
     readOnly: !isEditable,
     label,
     name,
-    type,
     placeholder,
   };
 

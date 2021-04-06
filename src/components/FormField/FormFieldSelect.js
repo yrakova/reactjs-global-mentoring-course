@@ -7,7 +7,7 @@ import mainStyles from '~/assets/styles/main';
 import FormFieldErrorBoundary from '../error-boundaries/FormFieldErrorBoundary';
 import variables from '~/assets/styles/variables';
 
-const mapValues = (values) => (values ? values.map((val) => ({ label: val, value: val })) : []);
+const getSelectedValuesAsObjects = (values) => (values ? values.map((val) => ({ label: val, value: val })) : []);
 
 const FormFieldSelect = ({
   label, options, name, placeholder,
@@ -17,22 +17,23 @@ const FormFieldSelect = ({
   const { setValue, setTouched } = helpers;
 
   const onSelectChange = (newValues) => {
-    setValue(newValues && newValues.length > 0 ? newValues.map(({ value }) => value) : null);
+    setValue(newValues.map(({ value }) => value));
   };
 
   const isInvalid = meta.touched && meta.error;
 
   const customStyles = {
-    control: (base) => (isInvalid
-      ? {
-        ...base,
+    control: (base) => {
+      const errorStyles = {
         borderColor: variables.errorBorderColor,
+        backgroundColor: variables.errorBackgroundColor,
         '&:hover': {
           borderColor: variables.errorBorderColor,
+          backgroundColor: variables.errorBackgroundColor,
         },
-        backgroundColor: variables.errorBackgroundColor,
-      }
-      : { ...base }),
+      };
+      return isInvalid ? { ...base, ...errorStyles } : { ...base };
+    },
   };
 
   return (
@@ -45,7 +46,7 @@ const FormFieldSelect = ({
           options={options}
           isMulti
           onChange={onSelectChange}
-          value={mapValues(selectedValues)}
+          value={getSelectedValuesAsObjects(selectedValues)}
           onBlur={setTouched}
           placeholder={placeholder}
         />

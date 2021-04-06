@@ -64,7 +64,7 @@
     "webpack-merge": "^5.7.3"
   },
   "lint-staged": {
-    "*.{js, jsx, json}": [
+    "*.{js, jsx, json, scss}": [
       "npm run prettify",
       "npm run eslint-check",
       "git add"

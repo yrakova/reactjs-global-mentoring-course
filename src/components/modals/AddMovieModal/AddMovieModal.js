@@ -38,8 +38,7 @@ const FIELDS = [
     type: 'text',
     key: 'poster_path',
     placeholder: 'Poster URL here',
-    validationSchema: Yup.string().url().required()
-      .label('Poster Url'),
+    validationSchema: Yup.string().url().required().label('Poster Url'),
   },
   {
     label: 'Genre',
@@ -49,7 +48,6 @@ const FIELDS = [
     placeholder: 'Select Genre(s)',
     validationSchema: Yup.array()
       .of(Yup.string().oneOf(GENRES))
-      .min(1)
       .nullable()
       .label('Genres'),
   },
@@ -77,11 +75,14 @@ const getOptions = (options) => (options ? options.map((option) => ({ label: opt
 
 const GENRES_OPTIONS = getOptions(GENRES.slice(0).sort(sortAbc));
 
-const validationSchemas = Object.assign(
+const validationSchemas = FIELDS.filter(
+  (field) => field.validationSchema,
+).reduce(
+  (schema, { key, validationSchema }) => ({
+    [key]: validationSchema,
+    ...schema,
+  }),
   {},
-  ...FIELDS.filter((field) => field.validationSchema).map((field) => ({
-    [field.key]: field.validationSchema,
-  })),
 );
 
 const commonValidationSchema = Yup.object(validationSchemas);
@@ -96,12 +97,13 @@ const MOVIE_DEFAULTS = {
 };
 
 const normalizeValues = (values) => {
-  Object.keys(values).forEach((key) => {
-    if (isNullableOrEmpty(values[key])) {
-      delete values[key];
+  const newValues = { ...values };
+  Object.keys(newValues).forEach((key) => {
+    if (isNullableOrEmpty(newValues[key])) {
+      delete newValues[key];
     }
   });
-  return values;
+  return newValues;
 };
 
 const AddMovieModal = ({
