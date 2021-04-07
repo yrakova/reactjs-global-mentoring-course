@@ -1,7 +1,8 @@
 export const MOVIES_INITIAL_STATE = {
   movies: [],
-  isLoading: false,
   updatingMovie: null,
+  isFetching: false,
+  isSubmitting: false,
 };
 
 export const SETTINGS_INITIAL_STATE = {

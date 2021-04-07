@@ -1,5 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
 import styles from './AddMovieModal.module.scss';
 import ModalBase from '../ModalBase/ModalBase';
 import { GENRES } from '~/services/mock-data';
@@ -7,6 +10,7 @@ import FormField from '../../FormField/FormField';
 import FormFieldSelect from '../../FormField/FormFieldSelect';
 import { MoviePropTypes } from '~/utils/CommonPropTypes';
 import { sortAbc } from '~/utils/sorting';
+import { isNullableOrEmpty } from '~/utils/check-value';
 
 const FIELDS = [
   {
@@ -15,89 +19,149 @@ const FIELDS = [
     readOnly: true,
     key: 'id',
   },
-  { label: 'Title', type: 'text', key: 'title' },
-  { label: 'Release Date', type: 'date', key: 'release_date' },
-  { label: 'Poster Url', type: 'text', key: 'poster_path' },
+  {
+    label: 'Title',
+    type: 'text',
+    key: 'title',
+    placeholder: 'Input title',
+    validationSchema: Yup.string().required().label('Title'),
+  },
+  {
+    label: 'Release Date',
+    type: 'date',
+    key: 'release_date',
+    placeholder: 'Select Date',
+    validationSchema: Yup.date().nullable().label('Release Date'),
+  },
+  {
+    label: 'Poster Url',
+    type: 'text',
+    key: 'poster_path',
+    placeholder: 'Poster URL here',
+    validationSchema: Yup.string().url().required().label('Poster Url'),
+  },
   {
     label: 'Genre',
     type: 'select',
     values: GENRES,
     key: 'genres',
+    placeholder: 'Select Genre(s)',
+    validationSchema: Yup.array()
+      .of(Yup.string().oneOf(GENRES))
+      .nullable()
+      .label('Genres'),
   },
-  { label: 'Runtime', type: 'number', key: 'runtime' },
-  { label: 'Overview', type: 'textarea', key: 'overview' },
+  {
+    label: 'Runtime',
+    type: 'number',
+    key: 'runtime',
+    placeholder: 'Runtime here',
+    validationSchema: Yup.number()
+      .required()
+      .positive()
+      .integer()
+      .label('Runtime'),
+  },
+  {
+    label: 'Overview',
+    type: 'textarea',
+    key: 'overview',
+    placeholder: 'Overview here',
+    validationSchema: Yup.string().required().label('Overview'),
+  },
 ];
 
 const getOptions = (options) => (options ? options.map((option) => ({ label: option, value: option })) : []);
 
 const GENRES_OPTIONS = getOptions(GENRES.slice(0).sort(sortAbc));
 
+const validationSchemas = FIELDS.filter(
+  (field) => field.validationSchema,
+).reduce(
+  (schema, { key, validationSchema }) => ({
+    [key]: validationSchema,
+    ...schema,
+  }),
+  {},
+);
+
+const commonValidationSchema = Yup.object(validationSchemas);
+
+const MOVIE_DEFAULTS = {
+  title: '',
+  overview: '',
+  release_date: '',
+  poster_path: '',
+  runtime: '',
+  genres: null,
+};
+
+const normalizeValues = (values) => {
+  const newValues = { ...values };
+  Object.keys(newValues).forEach((key) => {
+    if (isNullableOrEmpty(newValues[key])) {
+      delete newValues[key];
+    }
+  });
+  return newValues;
+};
+
 const AddMovieModal = ({
-  isEdit, movie, onAction, show,
+  isEdit, movie, onAction, show, isSubmitting,
 }) => {
-  const [mutableMovie, setMutableMovie] = useState({ ...movie });
-
-  useEffect(() => {
-    setMutableMovie({ ...movie });
-    return () => setMutableMovie({});
-  }, [show]);
-
-  const onReset = () => {
-    setMutableMovie({ ...movie });
-  };
-
-  const onSaveOrSubmit = () => {
-    const actionName = isEdit ? 'update' : 'create';
-    onAction(actionName, mutableMovie);
-  };
-
-  const onInputChange = (fieldKey, type, newValue) => {
-    if (type === 'number') {
-      newValue = Number(newValue);
-    }
-    const newMutableMovie = { ...mutableMovie, [fieldKey]: newValue };
-    setMutableMovie(newMutableMovie);
-  };
-
-  const onSelectInputChange = (fieldKey, newValues) => {
-    if (newValues) {
-      const newMutableMovie = { ...mutableMovie, [fieldKey]: newValues.map(({ value }) => value) };
-      setMutableMovie(newMutableMovie);
-    }
-  };
+  const actionName = isEdit ? 'update' : 'create';
 
   return show ? (
     <ModalBase
       title={isEdit ? 'Edit Movie' : 'Add Movie'}
       onClose={() => onAction('close')}
     >
-      <div className={styles.AddMovieModal}>
-        {FIELDS.filter((field) => !field.readOnly || isEdit).map((field) => (field.type === 'select' ? (
-          <FormFieldSelect
-            key={field.label}
-            label={field.label}
-            options={GENRES_OPTIONS}
-            onChange={(newValues) => {
-              onSelectInputChange(field.key, newValues);
-            }}
-            value={getOptions(mutableMovie[field.key])}
-          />
-        ) : (
-          <FormField
-            key={field.label}
-            label={field.label}
-            type={field.type}
-            isEditable={!field.readOnly}
-            onChange={(e) => onInputChange(field.key, field.type, e.target.value)}
-            value={mutableMovie[field.key]}
-          />
-        )))}
+      <Formik
+        initialValues={{ ...MOVIE_DEFAULTS, ...normalizeValues({ ...movie }) }}
+        onSubmit={(values) => {
+          onAction(actionName, normalizeValues({ ...values }));
+        }}
+        validationSchema={commonValidationSchema}
+      >
+        {({ dirty }) => {
+          const buttonsDisabled = isSubmitting || !dirty;
+          return (
+            <Form>
+              <div className={styles.AddMovieModal}>
+                {FIELDS.filter(
+                  (field) => !field.readOnly || isEdit,
+                ).map((field) => (field.type === 'select' ? (
+                  <FormFieldSelect
+                    key={field.label}
+                    label={field.label}
+                    name={field.key}
+                    placeholder={field.placeholder}
+                    options={GENRES_OPTIONS}
+                  />
+                ) : (
+                  <FormField
+                    key={field.label}
+                    label={field.label}
+                    name={field.key}
+                    type={field.type}
+                    placeholder={field.placeholder}
+                    isEditable={!field.readOnly}
+                  />
+                )))}
 
-        <div className={styles.buttonsContainer}>
-          <button onClick={onReset}>RESET</button>
-          <button onClick={onSaveOrSubmit}>{isEdit ? 'SAVE' : 'SUBMIT'}</button>
-        </div>
-      </div>
+                <div className={styles.buttonsContainer}>
+                  <button type="reset" disabled={buttonsDisabled}>
+                    RESET
+                  </button>
+                  <button type="submit" disabled={buttonsDisabled}>
+                    {isEdit ? 'SAVE' : 'SUBMIT'}
+                  </button>
+                </div>
+              </div>
+            </Form>
+          );
+        }}
+      </Formik>
     </ModalBase>
   ) : null;
 };
@@ -116,4 +180,8 @@ AddMovieModal.defaultProps = {
   show: false,
 };
 
-export default AddMovieModal;
+const mapStateToProps = (state) => ({
+  isSubmitting: state.moviesReducer.isSubmitting,
+});
+
+export default connect(mapStateToProps)(AddMovieModal);

@@ -7,5 +7,9 @@
 
   button {
     margin: 5px;
+    &[disabled] {
+      background-color: black;      
+      cursor: default;
+    }
   }
 }

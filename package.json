@@ -18,6 +18,7 @@
   },
   "author": "Yulia Rakova",
   "dependencies": {
+    "formik": "^2.2.6",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -25,7 +26,8 @@
     "react-router": "^5.2.0",
     "react-select": "^4.2.1",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@babel/eslint-plugin": "^7.13.10",
@@ -62,7 +64,7 @@
     "webpack-merge": "^5.7.3"
   },
   "lint-staged": {
-    "*.{js, jsx, json}": [
+    "*.{js, jsx, json, scss}": [
       "npm run prettify",
       "npm run eslint-check",
       "git add"

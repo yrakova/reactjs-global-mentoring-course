@@ -1,49 +1,58 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useField } from 'formik';
 import styles from './FormField.module.scss';
-import { isNullable } from '~/utils/check-value';
+import mainStyles from '~/assets/styles/main';
+import FormFieldErrorBoundary from '../error-boundaries/FormFieldErrorBoundary';
 
 const FormField = ({
   label,
-  type,
   isEditable,
-  onChange,
-  value,
+  name,
+  type,
   placeholder,
 }) => {
+  const [field, meta] = useField(name);
+
   const inputProps = {
     readOnly: !isEditable,
-    onChange: isEditable ? onChange : null,
+    label,
+    name,
     placeholder,
-    value: isNullable(value) ? '' : value,
   };
-  return (
-    <div className={styles.FormField}>
-      <label>{label}</label>
 
-      {type === 'textarea' ? (
-        <textarea {...inputProps} />
-      ) : (
-        <input type={type} {...inputProps} />
-      )}
-    </div>
+  const isInvalid = meta.error && meta.touched;
+  const fieldClassName = isInvalid ? mainStyles.fieldInvalid : '';
+
+  return (
+    <FormFieldErrorBoundary>
+      <div className={styles.FormField}>
+        <label htmlFor={name}>{label}</label>
+
+        {type === 'textarea' ? (
+          <textarea {...inputProps} {...field} className={fieldClassName} />
+        ) : (
+          <input type={type} {...inputProps} {...field} className={fieldClassName} />
+        )}
+        <div className={mainStyles.errorContainer}>
+          {isInvalid && <p className={mainStyles.error}>{meta.error}</p>}
+        </div>
+      </div>
+    </FormFieldErrorBoundary>
   );
 };
 
 FormField.propTypes = {
   label: PropTypes.string.isRequired,
   type: PropTypes.string,
-  onChange: PropTypes.func,
   isEditable: PropTypes.bool,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   placeholder: PropTypes.string,
+  name: PropTypes.string.isRequired,
 };
 
 FormField.defaultProps = {
   type: 'text',
-  onChange: () => {},
   isEditable: true,
-  value: '',
   placeholder: '',
 };
 

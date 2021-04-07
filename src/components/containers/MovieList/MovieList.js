@@ -84,9 +84,9 @@ const MovieList = ({
       />
       <AddMovieModal
         isEdit
+        movie={getMovieById(currentMovieId, movies)}
         show={showEditForm}
         onAction={onEditFormAction}
-        movie={getMovieById(currentMovieId, movies)}
       />
     </>
   );

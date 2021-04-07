@@ -145,14 +145,14 @@ export const updateMovie = (movie) => (dispatch) => {
       if (response.ok) {
         alert('Movie is successfully updated');
         dispatch(actionResolvedUpdateMovie(movieId));
-      } else {
-        return response.json().then((json) => {
-          const errorText = `Can't update movie ${movie.id}:${json.messages.map(
-            (msg) => `\n- ${msg}`,
-          )}`;
-          return Promise.reject(errorText);
-        });
+        return Promise.resolve();
       }
+      return response.json().then((json) => {
+        const errorText = `Can't update movie ${movie.id}:${json.messages.map(
+          (msg) => `\n- ${msg}`,
+        )}`;
+        return Promise.reject(errorText);
+      });
     })
     .catch((error) => {
       alert(error);
@@ -189,14 +189,14 @@ export const createMovie = (movie) => (dispatch) => {
         dispatch(actionResolvedCreateMovie());
         alert('Movie is successfully created');
         dispatch(getMovies());
-      } else {
-        return response.json().then((json) => {
-          const errorText = `Can't create movie ${
-            movie.title
-          }:${json.messages.map((msg) => `\n- ${msg}`)}`;
-          return Promise.reject(errorText);
-        });
+        return Promise.resolve();
       }
+      return response.json().then((json) => {
+        const errorText = `Can't create movie ${
+          movie.title
+        }:${json.messages.map((msg) => `\n- ${msg}`)}`;
+        return Promise.reject(errorText);
+      });
     })
     .catch((error) => {
       alert(error);

@@ -4,7 +4,7 @@ import styles from './AddMovieButton.module.scss';
 import AddMovieModal from '~/components/modals/AddMovieModal';
 import { createMovie } from '../../store/actions/movies-actions';
 
-export const AddMovieButton = ({ requestCreateMovie }) => {
+const AddMovieButton = ({ requestCreateMovie }) => {
   const [showAddMovieForm, setShowAddMovieForm] = useState(false);
 
   const onAddMovieAction = (formAction, mutableMovie) => {

@@ -5,6 +5,8 @@ $color-light-grey: #555555;
 $color-white: #ffffff;
 
 $error-text-color: red;
+$error-border-color: red;
+$error-background-color: #5a0404;
 
 $primary-font: 'Lato-Bold';
 $regular-font: 'Lato-Regular';
@@ -12,3 +14,9 @@ $regular-font: 'Lato-Regular';
 $color-rating-high: green;
 $color-rating-medium: orange;
 $color-rating-low: red;
+
+:export {
+    errorTextColor: $error-text-color;
+    errorBorderColor: $error-border-color;
+    errorBackgroundColor: $error-background-color;
+}

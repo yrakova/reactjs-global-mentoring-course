@@ -21,7 +21,7 @@ body {
 }
 
 .mainContainer {
-  .headerContainer {    
+  .headerContainer {
     margin-bottom: 20px;
   }
   .container {
@@ -51,4 +51,21 @@ button {
 
 .hidden {
   display: none;
+}
+
+.errorContainer {
+  height: 20px;
+}
+
+.error {
+  color: $error-text-color;
+  font-weight: 200;
+  font-size: 0.7em;
+  margin: 0;
+  padding: 0;
+}
+
+.fieldInvalid {
+  background-color: $error-background-color !important;
+  border: 1px $error-border-color solid;
 }
