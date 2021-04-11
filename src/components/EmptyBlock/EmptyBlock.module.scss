@@ -1,0 +1,15 @@
+@import '~/assets/styles/variables.scss';
+
+.EmptyBlock {
+  min-height: 450px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    font-size: 3em;
+    color: $color-white;
+    font-weight: 200;
+    font-family: $regular-font;
+  }
+}

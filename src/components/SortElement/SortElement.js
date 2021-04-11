@@ -1,26 +1,33 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import styles from './SortElement.module.scss';
 import { SORT_BY_VALUES } from '~/services/mock-data';
-import { getMovies } from '../../store/actions/movies-actions';
-import { actionUiSetSorting } from '../../store/actions/search-actions';
+import { useQuery } from '../../utils/hooks';
+import { isNullableOrEmpty } from '../../utils/check-value';
 
 const SortElement = ({
-  sortBy: currentSortBy, sortOrder: currentSortOrder, fetchMovies, setSorting,
+  sortBy: currentSortBy,
+  sortOrder: currentSortOrder,
 }) => {
-  const [sortBy, setSortBy] = useState(currentSortBy);
-  const [sortOrder, setSortOrder] = useState(currentSortOrder);
+  const history = useHistory();
+  const query = useQuery();
+
+  const updateQuery = (newSortBy, newSortOrder) => {
+    query.set('sortBy', newSortBy);
+    query.set('sortOrder', newSortOrder);
+    history.push(`/?${query.toString()}`);
+  };
 
   const handleChange = (event) => {
     const [newSortBy, newSortOrder] = event.target.value.split(',');
-    setSortBy(newSortBy);
-    setSortOrder(newSortOrder);
-    setSorting(newSortBy, newSortOrder);
-    fetchMovies();
+    updateQuery(newSortBy, newSortOrder);
   };
 
-  const selectedValue = `${sortBy},${sortOrder}`;
+  const selectedValue = !isNullableOrEmpty(currentSortBy) && !isNullableOrEmpty(currentSortOrder)
+    ? `${currentSortBy},${currentSortOrder}`
+    : undefined;
 
   return (
     <div className={styles.SortElement}>
@@ -30,7 +37,9 @@ const SortElement = ({
           className={styles.dropdown}
           value={selectedValue}
           onChange={handleChange}
+          defaultValue
         >
+          <option disabled value> -- select an option </option>
           {SORT_BY_VALUES.map((opt) => (
             <option key={opt.label} value={opt.value}>
               {opt.label}
@@ -51,9 +60,4 @@ const mapStateToProps = (state) => ({
   sortOrder: state.searchReducer.sortOrder,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  fetchMovies: () => dispatch(getMovies()),
-  setSorting: (sortBy, sortOrder) => dispatch(actionUiSetSorting(sortBy, sortOrder)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SortElement);
+export default connect(mapStateToProps)(SortElement);

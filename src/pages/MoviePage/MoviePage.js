@@ -24,7 +24,7 @@ const MoviePage = ({ fetchMovie, reset, selectedMovie }) => {
   const history = useHistory();
 
   const onBack = () => {
-    history.push('/');
+    history.goBack();
   };
 
   const getBlock = () => {

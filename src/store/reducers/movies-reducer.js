@@ -7,6 +7,7 @@ import {
   UPDATE_MOVIE,
   CREATE_MOVIE,
   RESET_SELECTED_MOVIE,
+  RESET_MOVIES,
 } from '../actions/movies-action-types';
 
 export default (state = MOVIES_INITIAL_STATE, action) => {
@@ -94,6 +95,11 @@ export default (state = MOVIES_INITIAL_STATE, action) => {
       return {
         ...state,
         isSubmitting: false,
+      };
+    case RESET_MOVIES:
+      return {
+        ...state,
+        movies: [],
       };
     default:
       return state;

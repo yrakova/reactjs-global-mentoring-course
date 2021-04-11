@@ -9,7 +9,7 @@ export const actionUiSetSorting = (sortBy, sortOrder) => ({
 
 export const actionUiSetFilters = (filters) => ({
   type: SET_FILTERS,
-  payload: filters,
+  payload: filters || [],
 });
 
 export const actionUiAddFilter = (filter) => ({

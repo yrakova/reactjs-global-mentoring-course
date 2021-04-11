@@ -6,6 +6,7 @@ import {
   UPDATE_MOVIE,
   CREATE_MOVIE,
   RESET_SELECTED_MOVIE,
+  RESET_MOVIES,
 } from './movies-action-types';
 
 const BASE_URL = 'http://localhost:4000';
@@ -97,12 +98,10 @@ export const getMovie = (movieId) => (dispatch) => {
   return fetch(generateFullEndpoint(action.endpoint), {
     ...getConfig(action.method, action.payload),
   })
-    .then(
-      (response) => {
-        if (response.ok) return response.json();
-        throw new Error(response.statusText);
-      },
-    )
+    .then((response) => {
+      if (response.ok) return response.json();
+      throw new Error(response.statusText);
+    })
     .then((json) => {
       const movie = json;
       dispatch(actionReceiveMovie(movie));
@@ -247,3 +246,9 @@ export const createMovie = (movie) => (dispatch) => {
     });
 };
 // ...CREATE MOVIE
+
+// RESET MOVIES...
+export const actionResetMovies = () => ({
+  type: RESET_MOVIES,
+});
+// ...RESET MOVIES

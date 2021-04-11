@@ -15,7 +15,7 @@ export const App = () => (
       <Route path="/film/:id" exact>
         <MoviePage />
       </Route>
-      <Route>
+      <Route path="*">
         <Page404 />
       </Route>
     </Switch>

@@ -1,23 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import MovieCardErrorBoundary from '~/components/error-boundaries/MovieCardErrorBoundary';
 import MovieCard from '~/components/MovieCard';
 import DeleteMovieModal from '../../modals/DeleteMovieModal';
 import AddMovieModal from '../../modals/AddMovieModal';
-import { getMovies, deleteMovie, updateMovie } from '../../../store/actions/movies-actions';
+import {
+  deleteMovie,
+  updateMovie,
+} from '../../../store/actions/movies-actions';
+import EmptyBlock from '../../EmptyBlock';
 
 const getMovieById = (id, movies) => movies.find((movie) => movie.id === id);
 
-const MovieList = ({
-  movies, fetchMovies, requestDeleteMovie, requestUpdateMovie,
-}) => {
+const MovieList = ({ movies, requestDeleteMovie, requestUpdateMovie }) => {
   const [showEditForm, setShowEditForm] = useState(false);
   const [showDeleteForm, setShowDeleteForm] = useState(false);
   const [currentMovieId, setCurrentMovieId] = useState(null);
-
-  useEffect(() => {
-    fetchMovies();
-  }, []);
 
   const optionsHandler = (action, movieId) => {
     setCurrentMovieId(movieId);
@@ -70,13 +68,19 @@ const MovieList = ({
     }
   };
 
+  const getMoviesBlock = () => (movies.length ? (
+    movies.map((movie) => (
+      <MovieCardErrorBoundary key={movie.id}>
+        <MovieCard movie={movie} optionsHandler={optionsHandler} />
+      </MovieCardErrorBoundary>
+    ))
+  ) : (
+    <EmptyBlock />
+  ));
+
   return (
     <>
-      {movies.map((movie) => (
-        <MovieCardErrorBoundary key={movie.id}>
-          <MovieCard movie={movie} optionsHandler={optionsHandler} />
-        </MovieCardErrorBoundary>
-      ))}
+      {getMoviesBlock()}
       <DeleteMovieModal
         show={showDeleteForm}
         onAction={onDeleteFormAction}
@@ -92,16 +96,11 @@ const MovieList = ({
   );
 };
 
-MovieList.propTypes = {};
-
-MovieList.defaultProps = {};
-
 const mapStateToProps = (state) => ({
   movies: state.moviesReducer.movies,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchMovies: () => dispatch(getMovies()),
   requestDeleteMovie: (movieId) => dispatch(deleteMovie(movieId)),
   requestUpdateMovie: (movie) => dispatch(updateMovie(movie)),
 });
