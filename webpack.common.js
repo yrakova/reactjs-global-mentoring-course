@@ -82,7 +82,7 @@ module.exports = {
       filename: 'index.html',
     }),
     new CopyWebpackPlugin({
-      patterns: [{ from: 'public/**/*', to: '[path][name].[ext]' }],
+      patterns: [{ from: 'public/**/*', to: '[path][name].[ext]' }, { from: '_redirects', to: '' }],
     }),
   ],
 };
