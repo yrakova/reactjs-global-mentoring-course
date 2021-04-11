@@ -3,6 +3,7 @@ export const MOVIES_INITIAL_STATE = {
   updatingMovie: null,
   isFetching: false,
   isSubmitting: false,
+  selectedMovie: null,
 };
 
 export const SETTINGS_INITIAL_STATE = {

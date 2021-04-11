@@ -1,9 +1,11 @@
 import {
   GET_MOVIES,
+  GET_MOVIE,
   NETWORK_PROVIDER_RESOLUTION,
   DELETE_MOVIE,
   UPDATE_MOVIE,
   CREATE_MOVIE,
+  RESET_SELECTED_MOVIE,
 } from './movies-action-types';
 
 const BASE_URL = 'http://localhost:4000';
@@ -76,6 +78,46 @@ export const getMovies = () => (dispatch, getState) => {
     });
 };
 // ...GET MOVIES
+
+// GET MOVIE...
+const actionRequestMovie = (movieId) => ({
+  type: GET_MOVIE,
+  endpoint: `/movies/${movieId}`,
+  method: 'GET',
+});
+
+const actionReceiveMovie = (movie) => ({
+  type: GET_MOVIE + NETWORK_PROVIDER_RESOLUTION.RESOLVED,
+  payload: movie,
+});
+
+export const getMovie = (movieId) => (dispatch) => {
+  const action = actionRequestMovie(movieId);
+  dispatch(action);
+  return fetch(generateFullEndpoint(action.endpoint), {
+    ...getConfig(action.method, action.payload),
+  })
+    .then(
+      (response) => {
+        if (response.ok) return response.json();
+        throw new Error(response.statusText);
+      },
+    )
+    .then((json) => {
+      const movie = json;
+      dispatch(actionReceiveMovie(movie));
+    })
+    .catch(() => {
+      dispatch(actionReceiveMovie(null));
+    });
+};
+// ...GET MOVIE
+
+// RESET SELECTED MOVIE...
+export const resetSelectedMovie = () => ({
+  type: RESET_SELECTED_MOVIE,
+});
+// ...RESET SELECTED MOVIE
 
 // DELETE MOVIE...
 const actionRequestDeleteMovie = (movieId) => ({

@@ -1,10 +1,12 @@
 import { MOVIES_INITIAL_STATE } from '../initial-state';
 import {
   GET_MOVIES,
+  GET_MOVIE,
   NETWORK_PROVIDER_RESOLUTION,
   DELETE_MOVIE,
   UPDATE_MOVIE,
   CREATE_MOVIE,
+  RESET_SELECTED_MOVIE,
 } from '../actions/movies-action-types';
 
 export default (state = MOVIES_INITIAL_STATE, action) => {
@@ -19,6 +21,32 @@ export default (state = MOVIES_INITIAL_STATE, action) => {
         ...state,
         isFetching: false,
         movies: action.payload,
+      };
+    case GET_MOVIES + NETWORK_PROVIDER_RESOLUTION.FAILED:
+      return {
+        ...state,
+        isFetching: false,
+      };
+    case GET_MOVIE:
+      return {
+        ...state,
+        isFetching: true,
+      };
+    case GET_MOVIE + NETWORK_PROVIDER_RESOLUTION.RESOLVED:
+      return {
+        ...state,
+        isFetching: false,
+        selectedMovie: action.payload,
+      };
+    case GET_MOVIE + NETWORK_PROVIDER_RESOLUTION.FAILED:
+      return {
+        ...state,
+        isFetching: false,
+      };
+    case RESET_SELECTED_MOVIE:
+      return {
+        ...state,
+        selectedMovie: null,
       };
     case DELETE_MOVIE:
       return {
@@ -63,7 +91,6 @@ export default (state = MOVIES_INITIAL_STATE, action) => {
       };
     case UPDATE_MOVIE + NETWORK_PROVIDER_RESOLUTION.FAILED:
     case DELETE_MOVIE + NETWORK_PROVIDER_RESOLUTION.FAILED:
-    case GET_MOVIES + NETWORK_PROVIDER_RESOLUTION.FAILED:
       return {
         ...state,
         isSubmitting: false,
