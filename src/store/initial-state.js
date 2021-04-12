@@ -9,7 +9,9 @@ export const MOVIES_INITIAL_STATE = {
 export const SETTINGS_INITIAL_STATE = {
   limit: 21,
   offset: 0,
-  sortBy: null,
-  sortOrder: null,
+  sortBy: 'release_date',
+  sortOrder: 'desc',
   filters: [],
+  searchValue: '',
+  searchBy: 'title',
 };

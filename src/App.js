@@ -12,6 +12,9 @@ export const App = () => (
       <Route path="/" exact>
         <Home />
       </Route>
+      <Route path="/search/:searchValue" exact>
+        <Home />
+      </Route>
       <Route path="/film/:id" exact>
         <MoviePage />
       </Route>

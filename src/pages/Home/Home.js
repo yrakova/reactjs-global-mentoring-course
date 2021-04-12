@@ -1,49 +1,47 @@
 import React, { useEffect } from 'react';
 
 import { connect } from 'react-redux';
+import { useRouteMatch } from 'react-router-dom';
 import Header from '../../components/Header';
 import MovieTable from '../../components/MovieTable';
 import Footer from '../../components/Footer';
 import NavBar from '../../components/NavBar';
 import styles from '../../assets/styles/main.scss';
-import {
-  actionUiSetSorting,
-  actionUiSetFilters,
-} from '../../store/actions/search-actions';
+import { actionUiSetSearch } from '../../store/actions/search-actions';
 import {
   getMovies,
   actionResetMovies,
 } from '../../store/actions/movies-actions';
 import { isNullableOrEmpty } from '../../utils/check-value';
-import { useQuery } from '../../utils/hooks';
 
 const Home = ({
-  setFilters,
-  setSorting,
+  setSearch,
   fetchMovies,
   resetMovies,
+  searchValue,
+  searchBy,
   sortBy,
   sortOrder,
   filters,
 }) => {
-  const query = useQuery();
-
-  const filtersFromParams = query.get('filters');
-  const sortByFromParams = query.get('sortBy');
-  const sortOrderFromParams = query.get('sortOrder');
+  const match = useRouteMatch({ path: '/search/:searchValue', strict: true });
 
   useEffect(() => {
-    setFilters(filtersFromParams ? filtersFromParams.split(',') : []);
-    setSorting(sortByFromParams, sortOrderFromParams);
-  }, [filtersFromParams, sortByFromParams, sortOrderFromParams]);
+    if (match) {
+      const { searchValue: searchValueFromUrl } = match.params;
+      if (searchValueFromUrl !== searchValue) {
+        setSearch(searchValueFromUrl);
+      }
+    }
+  }, [match]);
 
   useEffect(() => {
-    if (!isNullableOrEmpty(filters)) {
+    if (!isNullableOrEmpty(searchValue)) {
       fetchMovies();
     } else {
       resetMovies();
     }
-  }, [sortBy, sortOrder, filters]);
+  }, [searchValue, filters, sortBy, sortOrder, searchBy]);
 
   return (
     <div className={styles.mainContainer}>
@@ -64,14 +62,15 @@ Home.propTypes = {};
 Home.defaultProps = {};
 
 const mapStateToProps = (state) => ({
+  searchValue: state.searchReducer.searchValue,
   sortBy: state.searchReducer.sortBy,
   sortOrder: state.searchReducer.sortOrder,
   filters: state.searchReducer.filters,
+  searchBy: state.searchReducer.searchBy,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setFilters: (filters) => dispatch(actionUiSetFilters(filters)),
-  setSorting: (sortBy, sortOrder) => dispatch(actionUiSetSorting(sortBy, sortOrder)),
+  setSearch: (searchValue) => dispatch(actionUiSetSearch(searchValue)),
   fetchMovies: () => dispatch(getMovies()),
   resetMovies: () => dispatch(actionResetMovies()),
 });

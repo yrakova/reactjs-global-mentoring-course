@@ -1,5 +1,5 @@
 import {
-  SET_SORTING, SET_FILTERS, ADD_FILTER, REMOVE_FILTER,
+  SET_SORTING, SET_FILTERS, ADD_FILTER, REMOVE_FILTER, SET_SEARCH,
 } from '../actions/search-action-types';
 import { SETTINGS_INITIAL_STATE } from '../initial-state';
 
@@ -27,6 +27,13 @@ export default (state = SETTINGS_INITIAL_STATE, action) => {
       return {
         ...state,
         filters: [...state.filters.filter((item) => item !== action.payload)],
+      };
+    case SET_SEARCH:
+      const { searchValue, searchBy } = action.payload;
+      return {
+        ...state,
+        searchValue,
+        searchBy,
       };
     default:
       return state;

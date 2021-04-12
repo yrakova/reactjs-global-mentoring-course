@@ -39,9 +39,11 @@ const actionRequestMovies = ({
   sortBy,
   sortOrder,
   filters,
+  searchValue,
+  searchBy,
 }) => ({
   type: GET_MOVIES,
-  endpoint: `/movies?limit=${limit}&offset=${offset}&sortBy=${sortBy}&sortOrder=${sortOrder}&filter=${filters.toString()}`,
+  endpoint: `/movies?limit=${limit}&offset=${offset}&sortBy=${sortBy}&sortOrder=${sortOrder}&filter=${filters.toString()}&search=${searchValue}&searchBy=${searchBy}`,
   method: 'GET',
 });
 
@@ -57,6 +59,8 @@ export const getMovies = () => (dispatch, getState) => {
     sortBy,
     sortOrder,
     filters,
+    searchValue,
+    searchBy,
   } = getState().searchReducer;
   const action = actionRequestMovies({
     limit,
@@ -64,6 +68,8 @@ export const getMovies = () => (dispatch, getState) => {
     sortBy,
     sortOrder,
     filters,
+    searchValue,
+    searchBy,
   });
   dispatch(action);
   return fetch(generateFullEndpoint(action.endpoint), {
