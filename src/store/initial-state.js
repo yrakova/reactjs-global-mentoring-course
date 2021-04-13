@@ -3,6 +3,7 @@ export const MOVIES_INITIAL_STATE = {
   updatingMovie: null,
   isFetching: false,
   isSubmitting: false,
+  selectedMovie: null,
 };
 
 export const SETTINGS_INITIAL_STATE = {
@@ -10,5 +11,7 @@ export const SETTINGS_INITIAL_STATE = {
   offset: 0,
   sortBy: 'release_date',
   sortOrder: 'desc',
-  filters: ['Drama', 'Action'],
+  filters: [],
+  searchValue: '',
+  searchBy: 'title',
 };

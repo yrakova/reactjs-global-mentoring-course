@@ -1,5 +1,5 @@
 import {
-  SET_SORTING, SET_FILTERS, ADD_FILTER, REMOVE_FILTER,
+  SET_SORTING, SET_FILTERS, ADD_FILTER, REMOVE_FILTER, SET_SEARCH,
 } from './search-action-types';
 
 export const actionUiSetSorting = (sortBy, sortOrder) => ({
@@ -9,7 +9,7 @@ export const actionUiSetSorting = (sortBy, sortOrder) => ({
 
 export const actionUiSetFilters = (filters) => ({
   type: SET_FILTERS,
-  payload: filters,
+  payload: filters || [],
 });
 
 export const actionUiAddFilter = (filter) => ({
@@ -20,4 +20,9 @@ export const actionUiAddFilter = (filter) => ({
 export const actionUiRemoveFilter = (filter) => ({
   type: REMOVE_FILTER,
   payload: filter,
+});
+
+export const actionUiSetSearch = (searchValue, searchBy = 'title') => ({
+  type: SET_SEARCH,
+  payload: { searchValue, searchBy },
 });

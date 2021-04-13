@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import FilterItem from '~/components/FilterItem';
 import { GENRES } from '~/services/mock-data';
-import { getMovies } from '../../../store/actions/movies-actions';
 import {
   actionUiAddFilter,
   actionUiRemoveFilter,
@@ -12,7 +11,6 @@ const FilterBar = ({
   selectedGenres,
   addFilter,
   removeFilter,
-  fetchMovies,
 }) => {
   const onFilterItemToggle = (title, selected) => {
     if (selected) {
@@ -20,7 +18,6 @@ const FilterBar = ({
     } else {
       removeFilter(title);
     }
-    fetchMovies();
   };
 
   const isSelected = (genre) => selectedGenres.includes(genre);
@@ -46,7 +43,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   addFilter: (filter) => dispatch(actionUiAddFilter(filter)),
   removeFilter: (filter) => dispatch(actionUiRemoveFilter(filter)),
-  fetchMovies: () => dispatch(getMovies()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterBar);

@@ -1,9 +1,12 @@
 import {
   GET_MOVIES,
+  GET_MOVIE,
   NETWORK_PROVIDER_RESOLUTION,
   DELETE_MOVIE,
   UPDATE_MOVIE,
   CREATE_MOVIE,
+  RESET_SELECTED_MOVIE,
+  RESET_MOVIES,
 } from './movies-action-types';
 
 const BASE_URL = 'http://localhost:4000';
@@ -36,9 +39,13 @@ const actionRequestMovies = ({
   sortBy,
   sortOrder,
   filters,
+  searchValue,
+  searchBy,
 }) => ({
   type: GET_MOVIES,
-  endpoint: `/movies?limit=${limit}&offset=${offset}&sortBy=${sortBy}&sortOrder=${sortOrder}&filter=${filters.toString()}`,
+  endpoint: `/movies?${new URLSearchParams({
+    limit, offset, sortBy, sortOrder, filter: filters.toString(), search: searchValue, searchBy,
+  }).toString()}`,
   method: 'GET',
 });
 
@@ -54,6 +61,8 @@ export const getMovies = () => (dispatch, getState) => {
     sortBy,
     sortOrder,
     filters,
+    searchValue,
+    searchBy,
   } = getState().searchReducer;
   const action = actionRequestMovies({
     limit,
@@ -61,6 +70,8 @@ export const getMovies = () => (dispatch, getState) => {
     sortBy,
     sortOrder,
     filters,
+    searchValue,
+    searchBy,
   });
   dispatch(action);
   return fetch(generateFullEndpoint(action.endpoint), {
@@ -76,6 +87,43 @@ export const getMovies = () => (dispatch, getState) => {
     });
 };
 // ...GET MOVIES
+
+// GET MOVIE...
+const actionRequestMovie = (movieId) => ({
+  type: GET_MOVIE,
+  endpoint: `/movies/${movieId}`,
+  method: 'GET',
+});
+
+const actionReceiveMovie = (movie) => ({
+  type: GET_MOVIE + NETWORK_PROVIDER_RESOLUTION.RESOLVED,
+  payload: movie,
+});
+
+export const getMovie = (movieId) => (dispatch) => {
+  const action = actionRequestMovie(movieId);
+  dispatch(action);
+  return fetch(generateFullEndpoint(action.endpoint), {
+    ...getConfig(action.method, action.payload),
+  })
+    .then((response) => {
+      if (response.ok) return response.json();
+      throw new Error(response.statusText);
+    })
+    .then((movie) => {
+      dispatch(actionReceiveMovie(movie));
+    })
+    .catch(() => {
+      dispatch(actionReceiveMovie(null));
+    });
+};
+// ...GET MOVIE
+
+// RESET SELECTED MOVIE...
+export const resetSelectedMovie = () => ({
+  type: RESET_SELECTED_MOVIE,
+});
+// ...RESET SELECTED MOVIE
 
 // DELETE MOVIE...
 const actionRequestDeleteMovie = (movieId) => ({
@@ -205,3 +253,9 @@ export const createMovie = (movie) => (dispatch) => {
     });
 };
 // ...CREATE MOVIE
+
+// RESET MOVIES...
+export const actionResetMovies = () => ({
+  type: RESET_MOVIES,
+});
+// ...RESET MOVIES

@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import styles from './MovieCard.module.scss';
 import MovieOptionsPopup from '../MovieOptionsPopup/MovieOptionsPopup';
-import MovieContext from '../../MovieContext';
 import { MoviePropTypes } from '~/utils/CommonPropTypes';
 
 const MovieCard = ({ movie, optionsHandler }) => {
@@ -13,13 +13,8 @@ const MovieCard = ({ movie, optionsHandler }) => {
   const year = release_date ? new Date(release_date).getFullYear() : 'N/A';
 
   const [showOptionsPopup, setShowOptionsPopup] = useState(false);
-  const { selectedMovie, setSelectedMovie } = useContext(MovieContext);
 
-  useEffect(() => {
-    if (selectedMovie && selectedMovie.id === movie.id) {
-      setSelectedMovie(movie);
-    }
-  }, [movie]);
+  const history = useHistory();
 
   const hideOptionsPopup = () => {
     setShowOptionsPopup(false);
@@ -36,9 +31,13 @@ const MovieCard = ({ movie, optionsHandler }) => {
     setShowOptionsPopup(!showOptionsPopup);
   };
 
+  const openMoviePage = () => {
+    history.push(`/film/${id}`);
+  };
+
   return (
     <>
-      <div className={styles.MovieCard} onClick={() => setSelectedMovie(movie)} role="button">
+      <div className={styles.MovieCard} onClick={openMoviePage} role="button">
         <div className={styles.imgContainer}>
           <img src={poster_path} />
           <button

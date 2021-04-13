@@ -12,6 +12,7 @@ module.exports = {
   output: {
     filename: '[name].[hash].bundle.js',
     path: dist,
+    publicPath: '/',
   },
   resolve: {
     alias: {
@@ -81,7 +82,7 @@ module.exports = {
       filename: 'index.html',
     }),
     new CopyWebpackPlugin({
-      patterns: [{ from: 'public/**/*', to: '[path][name].[ext]' }],
+      patterns: [{ from: 'public/**/*', to: '[path][name].[ext]' }, { from: '_redirects', to: '' }],
     }),
   ],
 };
