@@ -43,7 +43,9 @@ const actionRequestMovies = ({
   searchBy,
 }) => ({
   type: GET_MOVIES,
-  endpoint: `/movies?limit=${limit}&offset=${offset}&sortBy=${sortBy}&sortOrder=${sortOrder}&filter=${filters.toString()}&search=${searchValue}&searchBy=${searchBy}`,
+  endpoint: `/movies?${new URLSearchParams({
+    limit, offset, sortBy, sortOrder, filter: filters.toString(), search: searchValue, searchBy,
+  }).toString()}`,
   method: 'GET',
 });
 
@@ -108,8 +110,7 @@ export const getMovie = (movieId) => (dispatch) => {
       if (response.ok) return response.json();
       throw new Error(response.statusText);
     })
-    .then((json) => {
-      const movie = json;
+    .then((movie) => {
       dispatch(actionReceiveMovie(movie));
     })
     .catch(() => {

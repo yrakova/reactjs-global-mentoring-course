@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './MoviePage.module.scss';
 import {
   getMovie,
@@ -9,16 +9,22 @@ import {
 import MovieDetails from '../../components/MovieDetails';
 import Page404 from '../Page404';
 
-const MoviePage = ({ fetchMovie, reset, selectedMovie }) => {
+const MoviePage = () => {
   const { id: movieId } = useParams();
+
+  const selectedMovie = useSelector(
+    (state) => state.moviesReducer.selectedMovie,
+  );
+
+  const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetchMovie(movieId).then(() => {
+    dispatch(getMovie(movieId)).then(() => {
       setIsLoading(false);
     });
-    return () => reset();
+    return () => dispatch(resetSelectedMovie());
   }, []);
 
   const history = useHistory();
@@ -42,13 +48,4 @@ const MoviePage = ({ fetchMovie, reset, selectedMovie }) => {
   return <div className={styles.MoviePage}>{getBlock()}</div>;
 };
 
-const mapStateToProps = (state) => ({
-  selectedMovie: state.moviesReducer.selectedMovie,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  fetchMovie: (movieId) => dispatch(getMovie(movieId)),
-  reset: () => dispatch(resetSelectedMovie()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(MoviePage);
+export default MoviePage;
