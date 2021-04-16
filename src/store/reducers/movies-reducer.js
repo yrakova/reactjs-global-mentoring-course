@@ -68,13 +68,14 @@ export default (state = MOVIES_INITIAL_STATE, action) => {
       };
     case UPDATE_MOVIE + NETWORK_PROVIDER_RESOLUTION.RESOLVED:
       const movieIndex = state.movies.findIndex(
-        (movie) => movie.id === state.updatingMovie.id,
+        (movie) => movie.id === state.updatingMovie.id
       );
       const movies = state.movies.slice();
       movies[movieIndex] = { ...state.updatingMovie };
       return {
         ...state,
         movies,
+        updatingMovie: null,
         isSubmitting: false,
       };
     case CREATE_MOVIE:
@@ -85,15 +86,11 @@ export default (state = MOVIES_INITIAL_STATE, action) => {
       };
     case CREATE_MOVIE + NETWORK_PROVIDER_RESOLUTION.RESOLVED:
     case CREATE_MOVIE + NETWORK_PROVIDER_RESOLUTION.FAILED:
-      return {
-        ...state,
-        updatingMovie: null,
-        isSubmitting: false,
-      };
     case UPDATE_MOVIE + NETWORK_PROVIDER_RESOLUTION.FAILED:
     case DELETE_MOVIE + NETWORK_PROVIDER_RESOLUTION.FAILED:
       return {
         ...state,
+        updatingMovie: null,
         isSubmitting: false,
       };
     case RESET_MOVIES:

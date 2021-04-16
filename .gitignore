@@ -9,3 +9,4 @@ dist
 /.changelog
 .npm/
 yarn.lock
+coverage/
