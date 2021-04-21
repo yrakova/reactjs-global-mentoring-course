@@ -37,9 +37,9 @@ const FormFieldSelect = ({ label, options, name, placeholder }) => {
 
   return (
     <FormFieldErrorBoundary>
-      <div className={styles.FormField}>
+      <div className={styles.FormField} data-testid={name}>
         <label htmlFor={name}>{label}</label>
-        <Select
+        <Select          
           inputId={name}
           styles={customStyles}
           className={styles.selectWrapper}
