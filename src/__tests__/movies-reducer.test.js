@@ -79,7 +79,7 @@ describe('movies-reducer', () => {
 
     test('GET_MOVIE received', () => {
       const state = { ...stateInitial, isFetching: true };
-      const expectedSelectedMovie = mockMovies[0];
+      const [expectedSelectedMovie] = mockMovies;
       const action = {
         type: types.GET_MOVIE + types.NETWORK_PROVIDER_RESOLUTION.RESOLVED,
         payload: expectedSelectedMovie,
@@ -94,7 +94,8 @@ describe('movies-reducer', () => {
   });
 
   describe('UPDATE_MOVIE', () => {
-    const updatingMovie = { ...mockMovies[0], title: 'NewTitle' };
+    const [movie] = mockMovies;
+    const updatingMovie = { ...movie, title: 'NewTitle' };
     test('UPDATE_MOVIE submitting', () => {
       expect(
         moviesReducer(stateInitial, {
@@ -144,7 +145,7 @@ describe('movies-reducer', () => {
   });
 
   describe('DELETE_MOVIE', () => {
-    const deletingMovie = mockMovies[0];
+    const [deletingMovie] = mockMovies;
     test('DELETE_MOVIE submitting', () => {
       const state = {
         ...stateInitial,

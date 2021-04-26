@@ -21,17 +21,16 @@ const stateInitial = {
 describe('Add/Edit Movie Modal', () => {
   const mockStore = configureStore([]);
   const mockAction = jest.fn();
-  let store;
+  let store, wrapper;
   beforeEach(() => {
     store = mockStore(stateInitial);
+    wrapper = ({ children }) => <Provider store={store}>{children}</Provider>;
   });
   test('AddMovie is shown', () => {
     const { queryByText, queryByRole } = render(
       <AddMovieModal show={true} onAction={mockAction} />,
       {
-        wrapper: ({ children }) => (
-          <Provider store={store}>{children}</Provider>
-        ),
+        wrapper: wrapper,
       }
     );
     const addMovieModal = queryByText('Add Movie');
@@ -43,7 +42,7 @@ describe('Add/Edit Movie Modal', () => {
   });
 
   test('EditMovie is shown', () => {
-    const mockMovie = mockMovies[0];
+    const [mockMovie] = mockMovies;
     const { queryByText, queryByRole } = render(
       <AddMovieModal
         show={true}
@@ -52,9 +51,7 @@ describe('Add/Edit Movie Modal', () => {
         movie={mockMovie}
       />,
       {
-        wrapper: ({ children }) => (
-          <Provider store={store}>{children}</Provider>
-        ),
+        wrapper: wrapper,
       }
     );
     const editMovieModal = queryByText('Edit Movie');
@@ -68,9 +65,7 @@ describe('Add/Edit Movie Modal', () => {
     const { queryByText } = render(
       <AddMovieModal show={false} onAction={mockAction} />,
       {
-        wrapper: ({ children }) => (
-          <Provider store={store}>{children}</Provider>
-        ),
+        wrapper: wrapper,
       }
     );
     const addMovieModal = queryByText('Add Movie');
@@ -78,7 +73,7 @@ describe('Add/Edit Movie Modal', () => {
   });
 
   test('Edit Movie Modal is hidden', () => {
-    const mockMovie = mockMovies[0];
+    const [mockMovie] = mockMovies;
     const { queryByText } = render(
       <AddMovieModal
         show={false}
@@ -87,9 +82,7 @@ describe('Add/Edit Movie Modal', () => {
         movie={mockMovie}
       />,
       {
-        wrapper: ({ children }) => (
-          <Provider store={store}>{children}</Provider>
-        ),
+        wrapper: wrapper,
       }
     );
     const editMovieModal = queryByText('Edit Movie');
@@ -100,9 +93,7 @@ describe('Add/Edit Movie Modal', () => {
     let btnSubmit, btnReset;
     beforeEach(() => {
       render(<AddMovieModal show={true} onAction={mockAction} />, {
-        wrapper: ({ children }) => (
-          <Provider store={store}>{children}</Provider>
-        ),
+        wrapper: wrapper,
       });
 
       btnSubmit = screen.queryByRole('button', { name: /submit/i });
@@ -167,7 +158,7 @@ describe('Add/Edit Movie Modal', () => {
   describe('Edit movie validation', () => {
     let btnSave, btnReset, mockMovie;
     beforeEach(() => {
-      mockMovie = mockMovies[0];
+      [mockMovie] = mockMovies;
 
       render(
         <AddMovieModal
@@ -177,9 +168,7 @@ describe('Add/Edit Movie Modal', () => {
           movie={mockMovie}
         />,
         {
-          wrapper: ({ children }) => (
-            <Provider store={store}>{children}</Provider>
-          ),
+          wrapper: wrapper,
         }
       );
 
@@ -189,15 +178,23 @@ describe('Add/Edit Movie Modal', () => {
 
     test('EDIT renders movie', () => {
       expect(screen.getByLabelText(/Title/i)).toHaveValue(mockMovie.title);
-      expect(screen.getByLabelText(/Poster URL/i)).toHaveValue(mockMovie.poster_path);
+      expect(screen.getByLabelText(/Poster URL/i)).toHaveValue(
+        mockMovie.poster_path
+      );
       expect(screen.getByLabelText(/Runtime/i)).toHaveValue(mockMovie.runtime);
-      expect(screen.getByLabelText(/Overview/i)).toHaveValue(mockMovie.overview);
-      expect(screen.getByLabelText(/Release Date/i)).toHaveValue(mockMovie.release_date);      
-      expect(screen.queryByTestId(/genres/i).children[1]).toHaveTextContent(mockMovie.genres.join(''));      
+      expect(screen.getByLabelText(/Overview/i)).toHaveValue(
+        mockMovie.overview
+      );
+      expect(screen.getByLabelText(/Release Date/i)).toHaveValue(
+        mockMovie.release_date
+      );
+      expect(screen.queryByTestId(/genres/i).children[1]).toHaveTextContent(
+        mockMovie.genres.join('')
+      );
     });
 
     test('SAVE success', async () => {
-      const newTitle = mockMovie.title + ' 123';
+      const newTitle = `${mockMovie.title} 123`;
       userEvent.clear(screen.getByLabelText(/Title/i));
       userEvent.type(screen.getByLabelText(/Title/i), newTitle);
       userEvent.click(btnSave);
@@ -206,10 +203,10 @@ describe('Add/Edit Movie Modal', () => {
           'update',
           expect.objectContaining({
             ...mockMovie,
-            title: newTitle
+            title: newTitle,
           })
         )
       );
-    })
+    });
   });
 });
