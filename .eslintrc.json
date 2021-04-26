@@ -12,7 +12,7 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },  
-  "plugins": ["react", "@babel"],
+  "plugins": ["react", "@babel", "jest"],
   "rules": {
     "max-len": ["error", 120],
     "react/prop-types": "off",

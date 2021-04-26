@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import styles from './ModalBase.module.scss';
 
-const modalRoot = document.getElementById('modal-root');
+const modalRoot = document.getElementById('modal-root') || document.body;
 
 const el = document.createElement('div');
 

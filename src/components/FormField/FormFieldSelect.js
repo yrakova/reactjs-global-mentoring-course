@@ -3,15 +3,14 @@ import PropTypes from 'prop-types';
 import Select from 'react-select';
 import { useField } from 'formik';
 import styles from './FormField.module.scss';
-import mainStyles from '~/assets/styles/main';
+import mainStyles from '~/assets/styles/main.scss';
 import FormFieldErrorBoundary from '../error-boundaries/FormFieldErrorBoundary';
-import variables from '~/assets/styles/variables';
+import variables from '~/assets/styles/variables.scss';
 
-const getSelectedValuesAsObjects = (values) => (values ? values.map((val) => ({ label: val, value: val })) : []);
+const getSelectedValuesAsObjects = (values) =>
+  values ? values.map((val) => ({ label: val, value: val })) : [];
 
-const FormFieldSelect = ({
-  label, options, name, placeholder,
-}) => {
+const FormFieldSelect = ({ label, options, name, placeholder }) => {
   const [, meta, helpers] = useField(name);
   const { value: selectedValues } = meta;
   const { setValue, setTouched } = helpers;
@@ -38,9 +37,10 @@ const FormFieldSelect = ({
 
   return (
     <FormFieldErrorBoundary>
-      <div className={styles.FormField}>
+      <div className={styles.FormField} data-testid={name}>
         <label htmlFor={name}>{label}</label>
-        <Select
+        <Select          
+          inputId={name}
           styles={customStyles}
           className={styles.selectWrapper}
           options={options}
@@ -64,7 +64,7 @@ FormFieldSelect.propTypes = {
     PropTypes.shape({
       value: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
-    }),
+    })
   ),
   name: PropTypes.string.isRequired,
 };
