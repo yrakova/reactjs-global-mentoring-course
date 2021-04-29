@@ -3,17 +3,26 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import styles from './ModalBase.module.scss';
 
-const modalRoot = document.getElementById('modal-root') || document.body;
-
-const el = document.createElement('div');
+let modalRoot;
+let el;
 
 const ModalBase = ({ children, onClose, title }) => {
   useEffect(() => {
+    if (!modalRoot) {
+      modalRoot = document.getElementById('modal-root');
+    }
+    if (!el) {
+      el = document.createElement('div');
+    }
     modalRoot.appendChild(el);
     return () => {
       modalRoot.removeChild(el);
     };
   }, []);
+
+  if (!el) {
+    el = document.createElement('div');
+  }
 
   // Use a portal to render the children into the element
   return ReactDOM.createPortal(
@@ -28,7 +37,7 @@ const ModalBase = ({ children, onClose, title }) => {
       </div>
     </div>,
     // A DOM element
-    el,
+    el
   );
 };
 
