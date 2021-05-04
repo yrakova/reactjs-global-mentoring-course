@@ -1,6 +1,6 @@
 const clientConfig = process.env.NODE_ENV === 'production'
-? require('./webpack.prod.js')
-: require('./webpack.dev.js');
+? require('./webpack.client.prod.js')
+: require('./webpack.client.dev.js');
 
 const serverConfig = require('./webpack.server.js');
 

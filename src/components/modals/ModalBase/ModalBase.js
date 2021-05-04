@@ -9,7 +9,7 @@ let el;
 const ModalBase = ({ children, onClose, title }) => {
   useEffect(() => {
     if (!modalRoot) {
-      modalRoot = document.getElementById('modal-root');
+      modalRoot = document.getElementById('modal-root') || document.body;
     }
     if (!el) {
       el = document.createElement('div');

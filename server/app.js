@@ -7,7 +7,7 @@ if (process.env.NODE_ENV == 'development') {
     const webpackDevMiddleware = require('webpack-dev-middleware');
     const webpackHotMiddleware = require('webpack-hot-middleware');
     const webpackHotServerMiddleware = require('webpack-hot-server-middleware');
-    const webpackConfig = require('../webpack.config');
+    const webpackConfig = require('../webpack/');
 
     const compiler = webpack(webpackConfig);    
 

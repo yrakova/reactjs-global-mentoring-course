@@ -1,10 +1,8 @@
 const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const src = path.resolve(__dirname, 'src');
-const dist = path.resolve(__dirname, 'dist');
+const src = path.resolve(__dirname, '..', 'src');
+const dist = path.resolve(__dirname, '..', 'dist');
 
 module.exports = {
   mode: process.env.NODE_ENV,  
@@ -47,8 +45,7 @@ module.exports = {
       },
       {
         test: /\.(jsx|js)$/,
-        include: path.resolve(__dirname, 'src'),
-        exclude: /(node_modules)/,
+        exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
         },
@@ -72,17 +69,5 @@ module.exports = {
         },
       },
     ],
-  },
-  plugins: [
-    new CleanWebpackPlugin(),
-    new MiniCssExtractPlugin({
-      filename: 'css/[name].css',
-    }),
-    new CopyWebpackPlugin({
-      patterns: [
-        { from: 'public/**/*', to: '[path][name].[ext]' },
-        { from: '_redirects', to: '' },
-      ],
-    }),
-  ],
+  }, 
 };
