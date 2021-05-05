@@ -7,6 +7,6 @@ const composeEnhancers = reduxDevTools || compose;
 
 const enhancers = composeEnhancers(applyMiddleware(thunkMiddleware));
 
-export default () => {
-  return createStore(reducers, enhancers);
+export default (initialState) => {
+  return createStore(reducers, initialState, enhancers);
 };

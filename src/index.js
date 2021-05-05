@@ -7,7 +7,7 @@ import configureStore from './store/store';
 
 const app = (
   <StrictMode>    
-      <App store={configureStore()} Router={BrowserRouter} />    
+      <App store={configureStore(window.PRELOADED_STATE)} Router={BrowserRouter} />    
   </StrictMode>
 );
 

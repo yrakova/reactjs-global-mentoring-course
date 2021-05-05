@@ -1,8 +1,9 @@
 import React from 'react';
-import { renderToNodeStream, renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom';
+import { renderToString } from 'react-dom/server';
+import { StaticRouter, matchPath } from 'react-router-dom';
 import App from './App';
 import configureStore from './store/store';
+import routes from './routes';
 
 function renderHTML(html, preloadedState) {
   return `<!doctype html>
@@ -32,14 +33,40 @@ function renderHTML(html, preloadedState) {
 export default function serverRenderer() {
   return (req, res) => {
     const store = configureStore();
-    const renderRoot = () => (
-      <App store={store} location={req.url} Router={StaticRouter} />
-    );
-    const context = {};
+    const promises = routes.reduce((acc, route) => {
+      if (matchPath(req.url, route) && route.component && route.component.initialAction) {
+        acc.push(Promise.resolve(store.dispatch(route.component.initialAction())));
+      }
+      return acc;
+    }, []);
+    Promise.all(promises).then(() => {
+      // This context object contains the results of the render
+      const context = {};
 
-    const htmlString = renderToString(renderRoot());
-    const preloadedState = store.getState();
+      const renderRoot = () => (
+        <App
+          context={context}
+          location={req.url}
+          Router={StaticRouter}
+          store={store}
+        />
+      );
 
-    res.send(renderHTML(htmlString, preloadedState));
+      renderToString(renderRoot());
+
+      // context.url will contain the URL to redirect to if a <Redirect> was used
+      if (context.url) {
+        res.writeHead(302, {
+          Location: context.url,
+        });
+        res.end();
+        return;
+      }
+
+      const htmlString = renderToString(renderRoot());
+      const preloadedState = store.getState();
+
+      res.send(renderHTML(htmlString, preloadedState));
+    }).catch(e => console.error(e));
   };
 }
