@@ -1,3 +1,4 @@
+import fetch from 'cross-fetch';
 import {
   GET_MOVIES,
   GET_MOVIE,

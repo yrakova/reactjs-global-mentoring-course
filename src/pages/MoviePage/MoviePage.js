@@ -13,17 +13,20 @@ const MoviePage = () => {
   const { id: movieId } = useParams();
 
   const selectedMovie = useSelector(
-    (state) => state.moviesReducer.selectedMovie,
+    (state) => state.moviesReducer.selectedMovie
   );
 
   const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    dispatch(getMovie(movieId)).then(() => {
-      setIsLoading(false);
-    });
+    if (!selectedMovie) {
+      setIsLoading(true);
+      dispatch(getMovie(movieId)).then(() => {
+        setIsLoading(false);
+      });
+    }
     return () => dispatch(resetSelectedMovie());
   }, []);
 
@@ -47,5 +50,7 @@ const MoviePage = () => {
 
   return <div className={styles.MoviePage}>{getBlock()}</div>;
 };
+
+MoviePage.initialActions = ({ id: movieId }) => [getMovie(movieId)];
 
 export default MoviePage;

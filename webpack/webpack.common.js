@@ -1,22 +1,22 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const src = path.resolve(__dirname, 'src');
-const dist = path.resolve(__dirname, 'dist');
+const src = path.resolve(__dirname, '..', 'src');
+const dist = path.resolve(__dirname, '..', 'dist');
+
+const isDevMod = process.env.NODE_ENV === 'development';
 
 module.exports = {
-  entry: ['./src/index.js'],
+  mode: process.env.NODE_ENV,  
   output: {
-    filename: '[name].[hash].bundle.js',
+    filename: 'js/[name].js',
     path: dist,
     publicPath: '/',
   },
   resolve: {
     alias: {
       '~': src,
+      'react-dom': '@hot-loader/react-dom',
     },
     extensions: ['.js', '.jsx', '.scss'],
   },
@@ -24,6 +24,7 @@ module.exports = {
     rules: [
       {
         test: /\.(sa|sc|c)ss$/,
+        include: /src/,
         use: [
           MiniCssExtractPlugin.loader,
           {
@@ -46,8 +47,7 @@ module.exports = {
       },
       {
         test: /\.(jsx|js)$/,
-        include: path.resolve(__dirname, 'src'),
-        exclude: /(node_modules)/,
+        exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
         },
@@ -57,7 +57,8 @@ module.exports = {
         use: [
           {
             loader: 'file-loader',
-          }],
+          },
+        ],
       },
       {
         test: /\.(woff(2)?|ttf|eot|svg)?$/,
@@ -70,19 +71,5 @@ module.exports = {
         },
       },
     ],
-  },
-  plugins: [
-    new CleanWebpackPlugin(),
-    new MiniCssExtractPlugin({
-      filename: '[name].[hash].css',
-    }),
-    new HtmlWebpackPlugin({
-      title: 'ReactJS App',
-      template: './src/assets/index-template.html',
-      filename: 'index.html',
-    }),
-    new CopyWebpackPlugin({
-      patterns: [{ from: 'public/**/*', to: '[path][name].[ext]' }, { from: '_redirects', to: '' }],
-    }),
-  ],
+  },  
 };

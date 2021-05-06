@@ -1,18 +1,18 @@
 import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 
-import { App } from './App';
-import { store } from './store/store';
+import App from './App';
+import configureStore from './store/store';
 
-const rootElement = document.getElementById('app-root');
-ReactDOM.render(
-  <StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </StrictMode>,
-  rootElement,
+const app = (
+  <StrictMode>    
+      <App store={configureStore(window.PRELOADED_STATE)} Router={BrowserRouter} />    
+  </StrictMode>
 );
+
+const renderMethod = !!module.hot ? ReactDOM.render : ReactDOM.hydrate;
+
+renderMethod(app, document.getElementById('app-root'));
 
 console.log(`This is a ${process.env.NODE_ENV} build!`);
