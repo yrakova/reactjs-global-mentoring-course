@@ -75,4 +75,11 @@ const mapDispatchToProps = (dispatch) => ({
   resetMovies: () => dispatch(actionResetMovies()),
 });
 
+Home.initialActions = ({searchValue}) => {
+  if (searchValue) {
+    return [actionUiSetSearch(searchValue), getMovies()];
+  }
+  return [];
+}
+
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

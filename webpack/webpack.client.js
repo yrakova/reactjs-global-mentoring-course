@@ -1,24 +1,21 @@
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const webpack = require('webpack');
 
+const isDevMod = process.env.NODE_ENV === 'development';
 
 module.exports = merge(common, {
   name: 'client',
   target: 'web',
-  entry: ['./src/index.js'],
+  entry: [isDevMod && 'webpack-hot-middleware/client', './src/index.js'].filter(Boolean),
   plugins: [
     new CleanWebpackPlugin(),
+    isDevMod && new webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
       filename: 'css/[name].css',
-    }),
-    new HtmlWebpackPlugin({
-      title: 'ReactJS App',
-      template: './src/assets/index-template.html',
-      filename: 'index.html',
     }),
     new CopyWebpackPlugin({
       patterns: [
@@ -26,5 +23,5 @@ module.exports = merge(common, {
         { from: '_redirects', to: '' },
       ],
     }),
-  ],
+  ].filter(Boolean),
 });

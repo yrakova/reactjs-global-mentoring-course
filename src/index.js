@@ -11,6 +11,8 @@ const app = (
   </StrictMode>
 );
 
-ReactDOM.hydrate(app, document.getElementById('app-root'));
+const renderMethod = !!module.hot ? ReactDOM.render : ReactDOM.hydrate;
+
+renderMethod(app, document.getElementById('app-root'));
 
 console.log(`This is a ${process.env.NODE_ENV} build!`);

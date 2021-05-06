@@ -1,7 +1,7 @@
 const { merge } = require('webpack-merge');
-const commonClient = require('./webpack.client.js');
+const parts = require('./webpack.parts.js');
 
-module.exports = merge(commonClient, {
+module.exports = merge(parts, {
   devtool: 'inline-source-map',
   devServer: {
     contentBase: '/dist',

@@ -34,8 +34,10 @@ export default function serverRenderer() {
   return (req, res) => {
     const store = configureStore();
     const promises = routes.reduce((acc, route) => {
-      if (matchPath(req.url, route) && route.component && route.component.initialAction) {
-        acc.push(Promise.resolve(store.dispatch(route.component.initialAction())));
+      const match = matchPath(req.url, route);
+      if (match && route.component && route.component.initialActions) {
+        const actions = route.component.initialActions(match.params);
+        actions.map((action) => acc.push(Promise.resolve(store.dispatch(action))));
       }
       return acc;
     }, []);

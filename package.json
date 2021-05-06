@@ -5,9 +5,9 @@
   "private": true,
   "main": "server/index.js",
   "scripts": {
-    "start:client": "cross-env NODE_ENV=development webpack serve --open --config ./webpack/",
+    "start": "cross-env NODE_ENV=development webpack serve --open --config ./webpack/webpack.config.js",
     "start:server": "cross-env NODE_ENV=development node ./server",
-    "build:client": "cross-env NODE_ENV=production webpack --config ./webpack/",
+    "build": "cross-env NODE_ENV=production webpack --config ./webpack/webpack.config.js",
     "build:server": "cross-env NODE_ENV=production webpack --config ./webpack/",
     "test": "jest",
     "prettify": "npx prettier --write .",
